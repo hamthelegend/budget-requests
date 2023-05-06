@@ -1,6 +1,6 @@
-﻿namespace BudgetRequests.Models.Admin;
+﻿namespace BudgetRequests.Models.Organizations;
 
-public class Admin
+public class Officer
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
