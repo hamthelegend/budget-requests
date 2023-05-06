@@ -1,6 +1,6 @@
 ﻿namespace BudgetRequests.Models;
 
-public class Preferences
+public class Preference
 {
     public string UniversityName { get; set; }
     public string CollegeName { get; set; }
