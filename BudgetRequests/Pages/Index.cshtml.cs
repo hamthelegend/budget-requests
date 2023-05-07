@@ -16,8 +16,15 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
-        
+        if (!_context.HasSuperAdmin())
+        {
+            return RedirectToPage("./CreateSuperAdmin/Index");
+        }
+        else
+        {
+            return Page();
+        }
     }
 }

@@ -50,6 +50,11 @@ public class DatabaseContext: DbContext
     {
         return AdminRoles.Where(x => x.Admin == admin).ToList();
     }
+
+    public bool HasSuperAdmin()
+    {
+        return AdminRoles.Any(x => x.Position == AdminPosition.SuperAdmin);
+    }
     
     public AdminRole? GetAdminRole(int id)
     {
