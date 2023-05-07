@@ -20,15 +20,19 @@ public class IndexModel : PageModel
     [BindProperty]
     [Display(Name = "First name")]
     public string FirstName { get; set; }
+    
     [BindProperty]
     [Display(Name = "Middle name")]
     public string? MiddleName { get; set; }
+    
     [BindProperty]
     [Display(Name = "Last name")]
     public string LastName { get; set; }
+    
     [BindProperty]
     [Display(Name = "Username")]
     public string Username { get; set; }
+    
     [BindProperty]
     [Display(Name = "Password")]
     public string Password { get; set; }

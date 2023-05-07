@@ -1,12 +1,12 @@
 ﻿namespace BudgetRequests.Models.Organizations;
 
-public class Officer
+public class Officer: User
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string? MiddleName { get; set; }
-    public string LastName { get; set; }
-    public string Username { get; set; }
-    public string PasswordHash { get; set; }
-    public string PasswordSalt { get; set; }
+    public override int Id { get; set; }
+    public override string FirstName { get; set; }
+    public override string? MiddleName { get; set; }
+    public override string LastName { get; set; }
+    public override string Username { get; set; }
+    public override string PasswordHash { get; set; }
+    public override string PasswordSalt { get; set; }
 }

@@ -10,7 +10,7 @@ public class DatabaseContext: DbContext
     public const string CONNECTION_STRING =
         @"Server=(localdb)\mssqllocaldb;Database=BudgetRequests;Trusted_Connection=True";
     
-    public DatabaseContext (DbContextOptions<DatabaseContext> options)
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
     }
@@ -27,6 +27,14 @@ public class DatabaseContext: DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(CONNECTION_STRING);
+    }
+
+    public List<User> GetUsers()
+    {
+        var users = Admins.Select(x => x as User).ToList();
+        var officers = Officers.Select(x => x as User).ToList();
+        users.AddRange(officers);
+        return users;
     }
 
     public List<Admin> GetAdmins()

@@ -22,9 +22,6 @@ public class IndexModel : PageModel
         {
             return RedirectToPage("./CreateSuperAdmin/Index");
         }
-        else
-        {
-            return Page();
-        }
+        return RedirectToPage("./Login/Index");
     }
 }
