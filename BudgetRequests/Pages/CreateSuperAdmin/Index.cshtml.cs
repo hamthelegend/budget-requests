@@ -1,4 +1,5 @@
-﻿using BudgetRequests.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using BudgetRequests.Data;
 using BudgetRequests.Models;
 using BudgetRequests.Models.Admins;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,20 @@ public class IndexModel : PageModel
         _context = context;
     }
     
+    [BindProperty]
+    [Display(Name = "First name")]
     public string FirstName { get; set; }
+    [BindProperty]
+    [Display(Name = "Middle name")]
     public string? MiddleName { get; set; }
+    [BindProperty]
+    [Display(Name = "Last name")]
     public string LastName { get; set; }
+    [BindProperty]
+    [Display(Name = "Username")]
     public string Username { get; set; }
+    [BindProperty]
+    [Display(Name = "Password")]
     public string Password { get; set; }
     
     public async Task<IActionResult> OnPostAsync()
@@ -31,7 +42,7 @@ public class IndexModel : PageModel
         
         var passwordSalt = Hash.GenerateSalt();
         var passwordHash = Password.ComputeHash(passwordSalt);
-
+        
         var superAdmin = new Admin
         {
             FirstName = FirstName,
@@ -41,19 +52,19 @@ public class IndexModel : PageModel
             PasswordHash = passwordHash,
             PasswordSalt = Convert.ToBase64String(passwordSalt)
         };
-
-        superAdmin = _context.Admins.Add(superAdmin).Entity;
+        
+        _context.AddAdmin(superAdmin);
 
         var superAdminRole = new AdminRole
         {
             Admin = superAdmin,
             Position = AdminPosition.SuperAdmin
         };
-
-        _context.AdminRoles.Add(superAdminRole);
+        
+        _context.AddAdminRole(superAdminRole);
         
         await _context.SaveChangesAsync();
-
+        
         return RedirectToPage("./Index");
     }
 }
