@@ -59,10 +59,10 @@ public class IndexModel : PageModel
             };
 
             await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme, 
-                new ClaimsPrincipal(claimsIdentity), 
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-            
+
             HttpContext.Session.SetInt32(Session.UserIdKey, user.Id);
 
             return RedirectToPage("../HomePage/Index");
