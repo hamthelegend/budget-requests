@@ -37,6 +37,11 @@ public class DatabaseContext: DbContext
         return users;
     }
 
+    public User? GetUser(int id)
+    {
+        return GetUsers().FirstOrDefault(x => x.Id == id);
+    }
+
     public List<Admin> GetAdmins()
     {
         return Admins.ToList();

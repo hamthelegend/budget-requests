@@ -1,0 +1,30 @@
+﻿@page
+@model BudgetRequests.Pages.HomePage.IndexModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./css/site.css">
+</head>
+<body style="background: #eeeeee">
+
+<div>
+    <div class="row d-flex justify-content-md-center align-items-center vh-100">
+        <div class="col-md-4 rounded-rectangle">
+            <h2 class="mb-4">Welcome, @Model.Name!</h2>
+            <form method="post">
+                <div class="form-group mt-4 mb-2">
+                    <input type="submit" value="Logout" class="btn btn-primary" style="width: 100%;"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

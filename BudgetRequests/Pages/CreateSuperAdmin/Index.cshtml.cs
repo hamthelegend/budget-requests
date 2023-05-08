@@ -39,11 +39,13 @@ public class IndexModel : PageModel
     
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
+        var isUsernameDuplicate = _context.GetUsers().Any(x => x.Username == Username);
+        
+        if (!ModelState.IsValid || isUsernameDuplicate)
         {
             return Page();
         }
-        
+
         var passwordSalt = Hash.GenerateSalt();
         var passwordHash = Password.ComputeHash(passwordSalt);
         
