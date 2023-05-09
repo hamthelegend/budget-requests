@@ -1,5 +1,5 @@
 ﻿@page
-@model BudgetRequests.Pages.CreateSuperAdmin.IndexModel
+@model BudgetRequests.Pages.CreateUser.IndexModel
 
 @{
     ViewData["Title"] = "Create Super Admin";
@@ -17,10 +17,20 @@
 <div>
     <div class="row d-flex justify-content-md-center align-items-center vh-100">
         <div class="col-md-4 rounded-rectangle">
-            <h2 class="mb-4">Create Super Admin</h2>
+            <h2 class="mb-4">@Model.PageTitle</h2>
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
+                @if (Model.HasSuperAdmin)
+                {
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 100%;">
+                        <input type="radio" class="btn-check" asp-for="UserType" value="admin" id="btn-radio-1" autocomplete="off" checked>
+                        <label class="btn btn-outline-secondary" for="btn-radio-1">Admin</label>
+
+                        <input type="radio" class="btn-check" asp-for="UserType" value="officer" id="btn-radio-2" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="btn-radio-2">Officer</label>
+                    </div>
+                }
+                <div class="form-group mt-4">
                     <label asp-for="FirstName" class="control-label"></label>
                     <input asp-for="FirstName" class="form-control mt-1"/>
                     <span asp-validation-for="FirstName" class="text-danger mt-1"></span>
@@ -45,6 +55,11 @@
                     <input asp-for="Password" class="form-control mt-1" type="password"/>
                     <span asp-validation-for="Password" class="text-danger mt-1"></span>
                 </div>
+                <div class="form-group mt-2">
+                    <label asp-for="RepeatPassword" class="control-label"></label>
+                    <input asp-for="RepeatPassword" class="form-control mt-1" type="password"/>
+                    <span asp-validation-for="RepeatPassword" class="text-danger mt-1"></span>
+                </div>
                 <div class="form-group mt-4 mb-2">
                     <input type="submit" value="Create" class="btn btn-primary" style="width: 100%;"/>
                 </div>
@@ -54,3 +69,6 @@
 </div>
 </body>
 </html>
+
+<script>
+</script>

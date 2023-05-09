@@ -33,7 +33,12 @@ public class IndexModel : PageModel
         Name = $"{user.FirstName} {user.LastName}";
     }
     
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostCreateAccount()
+    {
+        return RedirectToPage("../CreateUser/Index");
+    }
+    
+    public async Task<IActionResult> OnPostLogout()
     {
         await HttpContext.SignOutAsync(
             CookieAuthenticationDefaults.AuthenticationScheme);

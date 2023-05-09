@@ -16,8 +16,8 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\hamue\RiderProjects\BudgetRequests\BudgetRequests
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/CreateSuperAdmin/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlU3VwZXJBZG1pblxJbmRleC5jc2h0bWw=
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/CreateUser/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlVXNlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Error.cshtml]

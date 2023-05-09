@@ -21,13 +21,13 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (!_context.HasSuperAdmin())
-        {
-            return RedirectToPage("./CreateSuperAdmin/Index");
-        }
-
-        var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
-        var user = _context.GetUser(userId ?? -1);
-        return RedirectToPage(user == null ? "./Login/Index" : "./HomePage/Index");
+    if (!_context.HasSuperAdmin())
+    {
+        return RedirectToPage("./CreateSuperAdmin/Index");
+    }
+    
+    var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
+    var user = _context.GetUser(userId ?? -1);
+    return RedirectToPage(user == null ? "./Login/Index" : "./HomePage/Index");
     }
 }
