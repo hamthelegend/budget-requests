@@ -27,9 +27,7 @@ public class IndexModel : PageModel
         }
 
         var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
-        if (userId == null) return RedirectToPage("./Login/Index");
-        var user = _context.GetUser((int)userId);
-        if (user == null) return RedirectToPage("./Login/Index");
-        return RedirectToPage("./HomePage/Index");
+        var user = _context.GetUser(userId ?? -1);
+        return RedirectToPage(user == null ? "./Login/Index" : "./HomePage/Index");
     }
 }
