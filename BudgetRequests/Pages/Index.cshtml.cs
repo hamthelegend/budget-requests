@@ -26,9 +26,6 @@ public class IndexModel : PageModel
             return RedirectToPage("./CreateSuperAdmin/Index");
         }
 
-        await HttpContext.SignOutAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme);
-
         var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
         if (userId == null) return RedirectToPage("./Login/Index");
         var user = _context.GetUser((int)userId);
