@@ -21,9 +21,9 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    [BindProperty] public string PageTitle { get; set; }
-    
-    [BindProperty] public bool HasSuperAdmin { get; set; }
+    public string PageTitle { get; set; }
+
+    public bool HasSuperAdmin { get; set; }
 
     [BindProperty]
     [Display(Name = "First name")]
@@ -48,21 +48,32 @@ public class IndexModel : PageModel
     [BindProperty]
     [Display(Name = "Repeat password")]
     public string RepeatPassword { get; set; }
-    
-    [BindProperty] public string UserType { get; set; } = "admin";
 
-    public void OnGetAsync()
+    [BindProperty] public string? UserType { get; set; }
+
+    public IActionResult OnGetAsync()
     {
         HasSuperAdmin = _context.HasSuperAdmin();
+
+        if (HasSuperAdmin)
+        {
+            var user = HttpContext.Session.GetLoggedInUser(_context);
+            if (user == null) return RedirectToPage("../Login/Index");
+
+            if (user is not Admin admin ||
+                _context.GetAdminRoles(admin).All(x => x.Position != AdminPosition.SuperAdmin))
+                return RedirectToPage("../HomePage/Index"); // TODO: Show an error that they should be a super admin
+        }
+
         PageTitle = !HasSuperAdmin ? "Create super admin" : "Create user";
+        return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
         var isUsernameDuplicate = _context.GetUsers().Any(x => x.Username == Username);
 
-        // TODO: Fix ModelState.IsValid is returning false
-        if (/*!ModelState.IsValid ||*/ isUsernameDuplicate || Password != RepeatPassword)
+        if (!ModelState.IsValid || isUsernameDuplicate || Password != RepeatPassword)
         {
             return Page();
         }
@@ -104,13 +115,12 @@ public class IndexModel : PageModel
 
         await _context.SaveChangesAsync();
 
-        await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(Data.Login.GetClaimIdentity(user)),
-            Data.Login.AuthProperties);
-
-        HttpContext.Session.SetInt32(Session.UserIdKey, user.Id);
-
+        var isNotLoggedIn = !HttpContext.Session.IsLoggedIn();
+        if (isNotLoggedIn)
+        {
+            HttpContext.Session.Login(user);
+        }
+        
         return RedirectToPage("../HomePage/Index");
     }
 

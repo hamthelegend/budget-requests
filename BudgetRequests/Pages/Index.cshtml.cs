@@ -19,15 +19,12 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public IActionResult OnGetAsync()
     {
-    if (!_context.HasSuperAdmin())
-    {
-        return RedirectToPage("./CreateSuperAdmin/Index");
-    }
-    
-    var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
-    var user = _context.GetUser(userId ?? -1);
-    return RedirectToPage(user == null ? "./Login/Index" : "./HomePage/Index");
+        return RedirectToPage(!_context.HasSuperAdmin()
+            ? "./CreateUser/Index"
+            : HttpContext.Session.IsLoggedIn()
+                ? "./HomePage/Index"
+                : "./Login/Index");
     }
 }

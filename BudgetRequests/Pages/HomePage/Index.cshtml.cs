@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetRequests.Pages.HomePage;
 
-[Authorize]
 public class IndexModel : PageModel
 {
     private readonly DatabaseContext _context;
@@ -21,30 +20,29 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    [BindProperty]
-    public string Name { get; set; }
+    [BindProperty] public string Name { get; set; }
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
-        var userId = HttpContext.Session.GetInt32(Session.UserIdKey);
-        if (userId == null) return;
-        var user = _context.GetUser((int)userId);
-        if (user == null) return;
-        Name = $"{user.FirstName} {user.LastName}";
+        var user = HttpContext.Session.GetLoggedInUser(_context);
+        switch (user)
+        {
+            case null:
+                return RedirectToPage("../Login/Index");
+            default:
+                Name = $"{user.FirstName} {user.LastName}";
+                return Page();
+        }
     }
-    
+
     public async Task<IActionResult> OnPostCreateAccount()
     {
         return RedirectToPage("../CreateUser/Index");
     }
-    
+
     public async Task<IActionResult> OnPostLogout()
     {
-        await HttpContext.SignOutAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme);
-        
-        HttpContext.Session.SetInt32(Session.UserIdKey, -1);
-
+        HttpContext.Session.Logout();
         return RedirectToPage("../Index");
     }
 }

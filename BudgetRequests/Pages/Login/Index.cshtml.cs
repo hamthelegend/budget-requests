@@ -39,12 +39,7 @@ public class IndexModel : PageModel
 
         if (user == null || user.PasswordHash != passwordHash) return Page();
 
-        await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(Data.Login.GetClaimIdentity(user)),
-            Data.Login.AuthProperties);
-
-        HttpContext.Session.SetInt32(Session.UserIdKey, user.Id);
+        HttpContext.Session.Login(user);
 
         return RedirectToPage("../HomePage/Index");
 
