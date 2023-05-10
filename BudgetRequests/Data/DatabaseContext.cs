@@ -25,6 +25,7 @@ public class DatabaseContext: DbContext
     
     private DbSet<BudgetRequest> BudgetRequests { get; set; }
     private DbSet<Expense> Expenses { get; set; }
+    private DbSet<Signatory> Signatories { get; set; }
 
     private DbSet<Preference> Preferences { get; set; }
 
