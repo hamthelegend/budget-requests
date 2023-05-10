@@ -1,4 +1,5 @@
 ﻿using BudgetRequests.Models.Admins;
+using BudgetRequests.Models.BudgetRequests;
 using BudgetRequests.Models.Organizations;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,9 @@ public class DatabaseContext: DbContext
     private DbSet<OfficerRole> OfficerRoles { get; set; }
     private DbSet<Organization> Organizations { get; set; }
     
+    private DbSet<BudgetRequest> BudgetRequests { get; set; }
+    private DbSet<Expense> Expenses { get; set; }
+
     private DbSet<Preference> Preferences { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
