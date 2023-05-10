@@ -4,7 +4,7 @@ namespace BudgetRequests.Data;
 
 public static class Session
 {
-    public const string UserIdKey = "_UserId";
+    private const string UserIdKey = "_UserId";
 
     public static void Login(this ISession session, User user)
     {
