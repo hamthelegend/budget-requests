@@ -51,7 +51,7 @@ public class IndexModel : PageModel
 
     [BindProperty] public string? UserType { get; set; }
 
-    public IActionResult OnGetAsync()
+    public IActionResult OnGet()
     {
         HasSuperAdmin = _context.HasSuperAdmin();
 
@@ -60,7 +60,7 @@ public class IndexModel : PageModel
             var user = HttpContext.Session.GetLoggedInUser(_context);
             if (user == null) return RedirectToPage("../Login/Index");
 
-            if (user.Type == Models.UserType.Admin ||
+            if (user.Type != Models.UserType.Admin ||
                 _context.GetAdminRoles(user).All(x => x.Position != AdminPosition.SuperAdmin))
                 return RedirectToPage("../HomePage/Index"); // TODO: Show an error that they should be a super admin
         }
@@ -69,8 +69,10 @@ public class IndexModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPost()
     {
+        HasSuperAdmin = _context.HasSuperAdmin(); // TODO: Get rid of this shit
+
         var isUsernameDuplicate = _context.GetUsers().Any(x => x.Username == Username);
 
         if (!ModelState.IsValid || isUsernameDuplicate || Password != RepeatPassword)
@@ -104,7 +106,7 @@ public class IndexModel : PageModel
             _context.AddAdminRole(superAdminRole);
         }
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         var isNotLoggedIn = !HttpContext.Session.IsLoggedIn();
         if (isNotLoggedIn)

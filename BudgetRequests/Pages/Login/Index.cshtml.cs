@@ -27,7 +27,7 @@ public class IndexModel : PageModel
     [Display(Name = "Password")]
     public string Password { get; set; }
     
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPost()
     {
         if (!ModelState.IsValid)
         {

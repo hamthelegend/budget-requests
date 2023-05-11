@@ -19,7 +19,7 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IActionResult OnGetAsync()
+    public IActionResult OnGet()
     {
         return RedirectToPage(!_context.HasSuperAdmin()
             ? "./CreateUser/Index"
