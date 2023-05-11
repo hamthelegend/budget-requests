@@ -16,15 +16,16 @@
 
 <div>
     <div class="row d-flex justify-content-md-center align-items-center vh-100">
-        <div class="col-md-4 rounded-rectangle">
-            <h2 class="mb-4">Welcome, @Model.Name!</h2>
-            <form method="post">
-                <div class="form-group mt-4 mb-2">
-                    <input type="submit" value="Create an account" class="btn btn-secondary mb-2" style="width: 100%;" asp-page-handler="CreateAccount"/>
-                    <input type="submit" value="Logout" class="btn btn-primary" style="width: 100%;" asp-page-handler="Logout"/>
-                </div>
-            </form>
-        </div>
+        @for (var i = 0; i < 10; i++)
+        {
+            <div class="col-md-4 rounded-rectangle" style="padding: 20px; border-radius: 10px">
+                <h4 class="mb-2">U-fucking-week</h4>
+                <p>
+                    The Institute of Electronics Engineers of the Philippines – AUF Student Chapter has organized
+                    a Webinar this...
+                </p>
+            </div>
+        }
     </div>
 </div>
 </body>
