@@ -28,7 +28,7 @@ public class DatabaseContext: DbContext
 
     public IEnumerable<User> GetUsers()
     {
-        var users = Users.Select(x => x as User).ToList();
+        var users = Users.ToList();
         return users;
     }
 
