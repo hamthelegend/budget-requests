@@ -15,13 +15,10 @@ public class DatabaseContext: DbContext
     {
     }
     
-    private DbSet<Admin> Admins { get; set; }
+    private DbSet<User> Users { get; set; }
     private DbSet<AdminRole> AdminRoles { get; set; }
-    
-    private DbSet<Officer> Officers { get; set; }
     private DbSet<OfficerRole> OfficerRoles { get; set; }
     private DbSet<Organization> Organizations { get; set; }
-    
     private DbSet<Preference> Preferences { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,11 +26,9 @@ public class DatabaseContext: DbContext
         optionsBuilder.UseSqlServer(CONNECTION_STRING);
     }
 
-    public List<User> GetUsers()
+    public IEnumerable<User> GetUsers()
     {
-        var users = Admins.Select(x => x as User).ToList();
-        var officers = Officers.Select(x => x as User).ToList();
-        users.AddRange(officers);
+        var users = Users.Select(x => x as User).ToList();
         return users;
     }
 
@@ -44,38 +39,17 @@ public class DatabaseContext: DbContext
     
     public bool AddUser(User user)
     {
-        switch (user)
-        {
-            case Admin admin:
-                Admins.Add(admin);
-                break;
-            case Officer officer:
-                Officers.Add(officer);
-                break;
-        }
-
+        Users.Add(user);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
     }
 
-    public List<Admin> GetAdmins()
+    public List<User> GetAdmins()
     {
-        return Admins.ToList();
+        return Users.Where(x => x.Type == UserType.Admin).ToList();
     }
 
-    public Admin? GetAdmin(int id)
-    {
-        return Admins.FirstOrDefault(x => x.Id == id);
-    }
-
-    public bool AddAdmin(Admin admin)
-    {
-        Admins.Add(admin);
-        var changesSaved = SaveChanges();
-        return changesSaved > 0;
-    }
-
-    public List<AdminRole> GetAdminRoles(Admin admin)
+    public List<AdminRole> GetAdminRoles(User admin)
     {
         return AdminRoles.Where(x => x.Admin == admin).ToList();
     }
@@ -97,24 +71,12 @@ public class DatabaseContext: DbContext
         return changesSaved > 0;
     }
 
-    public List<Officer> GetOfficers()
+    public List<User> GetOfficers()
     {
-        return Officers.ToList();
+        return Users.Where(x => x.Type == UserType.Officer).ToList();
     }
 
-    public Officer? GetOfficer(int id)
-    {
-        return Officers.FirstOrDefault(x => x.Id == id);
-    }
-    
-    public bool AddOfficer(Officer officer)
-    {
-        Officers.Add(officer);
-        var changesSaved = SaveChanges();
-        return changesSaved > 0;
-    }
-
-    public List<OfficerRole> GetOfficerRoles(Officer officer)
+    public List<OfficerRole> GetOfficerRoles(User officer)
     {
         return OfficerRoles.Where(x => x.Officer == officer).ToList();
     }

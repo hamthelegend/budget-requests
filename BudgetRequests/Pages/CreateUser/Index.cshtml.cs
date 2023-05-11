@@ -60,8 +60,8 @@ public class IndexModel : PageModel
             var user = HttpContext.Session.GetLoggedInUser(_context);
             if (user == null) return RedirectToPage("../Login/Index");
 
-            if (user is not Admin admin ||
-                _context.GetAdminRoles(admin).All(x => x.Position != AdminPosition.SuperAdmin))
+            if (user.Type == Models.UserType.Admin ||
+                _context.GetAdminRoles(user).All(x => x.Position != AdminPosition.SuperAdmin))
                 return RedirectToPage("../HomePage/Index"); // TODO: Show an error that they should be a super admin
         }
 
@@ -81,25 +81,16 @@ public class IndexModel : PageModel
         var passwordSalt = Hash.GenerateSalt();
         var passwordHash = Password.ComputeHash(passwordSalt);
 
-        var user = UserType == "admin" || !HasSuperAdmin
-            ? new Admin
-            {
-                FirstName = FirstName,
-                MiddleName = MiddleName,
-                LastName = LastName,
-                Username = Username,
-                PasswordHash = passwordHash,
-                PasswordSalt = Convert.ToBase64String(passwordSalt)
-            }
-            : new Officer
-            {
-                FirstName = FirstName,
-                MiddleName = MiddleName,
-                LastName = LastName,
-                Username = Username,
-                PasswordHash = passwordHash,
-                PasswordSalt = Convert.ToBase64String(passwordSalt)
-            } as User;
+        var user = new User
+        {
+            Type = UserType == "admin" || !HasSuperAdmin ? Models.UserType.Admin : Models.UserType.Officer,
+            FirstName = FirstName,
+            MiddleName = MiddleName,
+            LastName = LastName,
+            Username = Username,
+            PasswordHash = passwordHash,
+            PasswordSalt = Convert.ToBase64String(passwordSalt)
+        };
 
         _context.AddUser(user);
 
@@ -107,7 +98,7 @@ public class IndexModel : PageModel
         {
             var superAdminRole = new AdminRole
             {
-                Admin = (user as Admin)!,
+                Admin = user,
                 Position = AdminPosition.SuperAdmin
             };
             _context.AddAdminRole(superAdminRole);

@@ -4,27 +4,27 @@ namespace BudgetRequests.Data;
 
 public static class Session
 {
-    private const string UserIdKey = "_UserId";
+    private const string UsernameKey = "_Username";
 
     public static void Login(this ISession session, User user)
     {
-        session.SetInt32(UserIdKey, user.Id);
+        session.SetString(UsernameKey, user.Username);
     }
 
     public static void Logout(this ISession session)
     {
-        session.SetInt32(UserIdKey, -1);
+        session.SetString(UsernameKey, null!);
     }
 
     public static User? GetLoggedInUser(this ISession session, DatabaseContext databaseContext)
     {
-        var userId = session.GetInt32(UserIdKey);
-        return databaseContext.GetUser(userId ?? -1);
+        var username = session.GetString(UsernameKey);
+        return databaseContext.GetUsers().FirstOrDefault(x => x.Username == username);
     }
 
     public static bool IsLoggedIn(this ISession session)
     {
-        var userId = session.GetInt32(UserIdKey);
-        return userId != null && userId != -1;
+        var username = session.GetString(UsernameKey);
+        return username != null;
     }
 }
