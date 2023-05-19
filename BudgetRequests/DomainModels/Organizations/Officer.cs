@@ -1,15 +1,16 @@
 ﻿using BudgetRequests.DomainModels.Users;
-using BudgetRequests.Models.Organizations;
+using BudgetRequests.Models;
 
 namespace BudgetRequests.DomainModels.Organizations;
 
 public record Officer(
-    int Id,
-    Models.Organizations.OfficerRole Role,
     string FirstName,
     string? MiddleName,
     string LastName,
     string Username,
     string PasswordHash,
-    string PasswordSalt) :
-    User(Id, UserType.Officer, FirstName, MiddleName, LastName, Username, PasswordHash, PasswordSalt);
+    string PasswordSalt,
+    List<OfficerRole> Roles,
+    int Id = DatabaseContext.NoId) :
+    User(Id: Id, FirstName: FirstName, MiddleName: MiddleName, LastName: LastName,
+        Username: Username, PasswordHash: PasswordHash, PasswordSalt: PasswordSalt);

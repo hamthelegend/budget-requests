@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using BudgetRequests.Data;
 using BudgetRequests.Models;
-using BudgetRequests.Models.Admins;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;

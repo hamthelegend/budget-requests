@@ -1,11 +1,16 @@
-﻿namespace BudgetRequests.DomainModels.Users;
+﻿using BudgetRequests.DomainModels.Admins;
+using BudgetRequests.Models;
 
-public record User(
-    int Id, 
-    UserType Type, 
-    string FirstName, 
-    string? MiddleName, 
-    string LastName, 
-    string Username, 
-    string PasswordHash, 
-    string PasswordSalt);
+namespace BudgetRequests.DomainModels.Users;
+
+public abstract record User(
+    string FirstName,
+    string? MiddleName,
+    string LastName,
+    string Username,
+    string PasswordHash,
+    string PasswordSalt,
+    int Id = DatabaseContext.NoId)
+{
+    public UserType Type => this is Admin ? UserType.Admin : UserType.Officer;
+};

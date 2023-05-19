@@ -1,15 +1,17 @@
-﻿using BudgetRequests.DomainModels.Users;
-using BudgetRequests.Models.Admins;
+﻿using BudgetRequests.DatabaseModels.Admins;
+using BudgetRequests.DomainModels.Users;
+using BudgetRequests.Models;
 
 namespace BudgetRequests.DomainModels.Admins;
 
 public record Admin(
-    int Id,
     string FirstName,
     string? MiddleName,
     string LastName,
     string Username,
     string PasswordHash,
     string PasswordSalt,
-    List<AdminRole> Roles) :
-    User(Id, UserType.Admin, FirstName, MiddleName, LastName, Username, PasswordHash, PasswordSalt);
+    List<AdminPosition> Positions,
+    int Id = DatabaseContext.NoId) :
+    User(Id: Id, FirstName: FirstName, MiddleName: MiddleName, LastName: LastName,
+        Username: Username, PasswordHash: PasswordHash, PasswordSalt: PasswordSalt);

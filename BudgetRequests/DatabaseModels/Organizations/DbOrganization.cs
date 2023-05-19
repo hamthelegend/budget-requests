@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using BudgetRequests.Models.Admins;
+using BudgetRequests.DatabaseModels.Users;
+using BudgetRequests.Models;
 
-namespace BudgetRequests.Models.Organizations;
+namespace BudgetRequests.DatabaseModels.Organizations;
 
-public class Organization
+public class DbOrganization
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public User? Adviser { get; set; }
+    public DbUser? Adviser { get; set; }
     public bool IsStudentCouncil { get; set; }
     [Column(TypeName = "decimal(18,2)")]
     public decimal GrossBudget { get; set; }

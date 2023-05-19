@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(DatabaseContext.CONNECTION_STRING));
+    options.UseSqlServer(DatabaseContext.ConnectionString));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

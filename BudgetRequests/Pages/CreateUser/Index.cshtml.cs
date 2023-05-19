@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using BudgetRequests.Data;
+using BudgetRequests.DatabaseModels.Admins;
+using BudgetRequests.DatabaseModels.Users;
 using BudgetRequests.DomainModels;
+using BudgetRequests.DomainModels.Admins;
+using BudgetRequests.DomainModels.Organizations;
+using BudgetRequests.DomainModels.Users;
 using BudgetRequests.Models;
-using BudgetRequests.Models.Admins;
-using BudgetRequests.Models.Organizations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -62,8 +65,10 @@ public class IndexModel : PageModel
             if (user == null) return RedirectToPage("../Login/Index");
 
             if (user.Type != DomainModels.Users.UserType.Admin ||
-                _context.GetAdminRoles(user).All(x => x.Position != AdminPosition.SuperAdmin))
+                (user as Admin)!.Positions.All(position => position != AdminPosition.SuperAdmin))
+            {
                 return RedirectToPage("../HomePage/Index"); // TODO: Show an error that they should be a super admin
+            }
         }
 
         PageTitle = !HasSuperAdmin ? "Create super admin" : "Create user";
@@ -72,7 +77,7 @@ public class IndexModel : PageModel
 
     public IActionResult OnPost()
     {
-        HasSuperAdmin = _context.HasSuperAdmin(); // TODO: Get rid of this shit
+        HasSuperAdmin = _context.HasSuperAdmin(); // TODO: Do not touch!!
 
         var isUsernameDuplicate = _context.GetUsers().Any(x => x.Username == Username);
 
@@ -83,29 +88,27 @@ public class IndexModel : PageModel
 
         var passwordSalt = Hash.GenerateSalt();
         var passwordHash = Password.ComputeHash(passwordSalt);
+        
 
-        var user = new User
-        {
-            Type = UserType == "admin" || !HasSuperAdmin ? DomainModels.Users.UserType.Admin : DomainModels.Users.UserType.Officer,
-            FirstName = FirstName,
-            MiddleName = MiddleName,
-            LastName = LastName,
-            Username = Username,
-            PasswordHash = passwordHash,
-            PasswordSalt = Convert.ToBase64String(passwordSalt)
-        };
+        var user = UserType == "admin"
+            ? new Admin(
+                FirstName,
+                MiddleName,
+                LastName,
+                Username,
+                passwordHash,
+                Convert.ToBase64String(passwordSalt),
+                !HasSuperAdmin ? new List<AdminPosition> { AdminPosition.SuperAdmin } : new List<AdminPosition>())
+            : new Officer(
+                FirstName,
+                MiddleName,
+                LastName,
+                Username,
+                passwordHash,
+                Convert.ToBase64String(passwordSalt),
+                new List<OfficerRole>()) as User;
 
-        _context.AddUser(user);
-
-        if (!HasSuperAdmin)
-        {
-            var superAdminRole = new AdminRole
-            {
-                Admin = user,
-                Position = AdminPosition.SuperAdmin
-            };
-            _context.AddAdminRole(superAdminRole);
-        }
+        _context.AddUpdateUser(user);
 
         _context.SaveChanges();
 
@@ -114,7 +117,7 @@ public class IndexModel : PageModel
         {
             HttpContext.Session.Login(user);
         }
-        
+
         return RedirectToPage("../HomePage/Index");
     }
 

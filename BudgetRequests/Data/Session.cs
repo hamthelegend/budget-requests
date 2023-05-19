@@ -1,4 +1,6 @@
-﻿using BudgetRequests.Models;
+﻿using BudgetRequests.DatabaseModels.Users;
+using BudgetRequests.DomainModels.Users;
+using BudgetRequests.Models;
 
 namespace BudgetRequests.Data;
 

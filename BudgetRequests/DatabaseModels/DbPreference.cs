@@ -1,6 +1,6 @@
 ﻿namespace BudgetRequests.Models;
 
-public class Preference
+public class DbPreference
 {
     public int Id { get; set; }
     public string UniversityName { get; set; }

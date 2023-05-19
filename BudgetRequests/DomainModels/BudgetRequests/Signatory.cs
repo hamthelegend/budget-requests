@@ -2,7 +2,7 @@
 
 namespace BudgetRequests.DomainModels.BudgetRequests;
 
-public record Signatory(
+public abstract record Signatory(
     User User,
     string Position,
     bool HasSigned);

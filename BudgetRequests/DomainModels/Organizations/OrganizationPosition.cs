@@ -8,4 +8,8 @@ public enum OrganizationPosition
     Treasurer,
     Auditor,
     PublicRelationsOfficer,
+    AssistantDean,
+    Dean,
+    StudentAffairsDirector,
+    SuperAdmin
 }

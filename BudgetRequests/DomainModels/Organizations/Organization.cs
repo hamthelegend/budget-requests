@@ -1,10 +1,11 @@
 ﻿using BudgetRequests.DomainModels.Users;
+using BudgetRequests.Models;
 
 namespace BudgetRequests.DomainModels.Organizations;
 
 public record Organization(
-    int Id, 
-    string Name, 
+    string Name,
     User Adviser,
-    bool IsStudentCouncil, 
-    decimal GrossBudget);
+    bool IsStudentCouncil,
+    decimal GrossBudget,
+    int Id = DatabaseContext.NoId);

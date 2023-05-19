@@ -1,8 +1,8 @@
 ﻿using BudgetRequests.DomainModels.Users;
 
-namespace BudgetRequests.Models;
+namespace BudgetRequests.DatabaseModels.Users;
 
-public class User
+public class DbUser
 {
     public int Id { get; set; }
     public UserType Type { get; set; }
