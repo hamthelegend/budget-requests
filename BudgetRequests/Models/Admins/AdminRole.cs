@@ -1,4 +1,6 @@
-﻿namespace BudgetRequests.Models.Admins;
+﻿using BudgetRequests.DomainModels;
+
+namespace BudgetRequests.Models.Admins;
 
 public class AdminRole
 {

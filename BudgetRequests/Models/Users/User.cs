@@ -1,4 +1,6 @@
-﻿namespace BudgetRequests.Models;
+﻿using BudgetRequests.DomainModels.Users;
+
+namespace BudgetRequests.Models;
 
 public class User
 {

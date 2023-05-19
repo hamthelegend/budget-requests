@@ -1,4 +1,4 @@
-﻿namespace BudgetRequests.Models.Admins;
+﻿namespace BudgetRequests.DomainModels;
 
 public enum AdminPosition
 {

@@ -1,4 +1,6 @@
-﻿using BudgetRequests.Models.Admins;
+﻿using BudgetRequests.DomainModels;
+using BudgetRequests.DomainModels.Users;
+using BudgetRequests.Models.Admins;
 using BudgetRequests.Models.BudgetRequests;
 using BudgetRequests.Models.Organizations;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,7 @@
-﻿namespace BudgetRequests.Models.Organizations;
+﻿using BudgetRequests.DomainModels;
+using BudgetRequests.DomainModels.Organizations;
+
+namespace BudgetRequests.Models.Organizations;
 
 public class OfficerRole
 {

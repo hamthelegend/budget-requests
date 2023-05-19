@@ -1,4 +1,4 @@
-﻿namespace BudgetRequests.Models;
+﻿namespace BudgetRequests.DomainModels.Users;
 
 public enum UserType
 {

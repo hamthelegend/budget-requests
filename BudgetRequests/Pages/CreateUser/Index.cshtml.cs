@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using BudgetRequests.Data;
+using BudgetRequests.DomainModels;
 using BudgetRequests.Models;
 using BudgetRequests.Models.Admins;
 using BudgetRequests.Models.Organizations;
@@ -60,7 +61,7 @@ public class IndexModel : PageModel
             var user = HttpContext.Session.GetLoggedInUser(_context);
             if (user == null) return RedirectToPage("../Login/Index");
 
-            if (user.Type != Models.UserType.Admin ||
+            if (user.Type != DomainModels.Users.UserType.Admin ||
                 _context.GetAdminRoles(user).All(x => x.Position != AdminPosition.SuperAdmin))
                 return RedirectToPage("../HomePage/Index"); // TODO: Show an error that they should be a super admin
         }
@@ -85,7 +86,7 @@ public class IndexModel : PageModel
 
         var user = new User
         {
-            Type = UserType == "admin" || !HasSuperAdmin ? Models.UserType.Admin : Models.UserType.Officer,
+            Type = UserType == "admin" || !HasSuperAdmin ? DomainModels.Users.UserType.Admin : DomainModels.Users.UserType.Officer,
             FirstName = FirstName,
             MiddleName = MiddleName,
             LastName = LastName,

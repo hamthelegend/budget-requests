@@ -1,4 +1,4 @@
-﻿namespace BudgetRequests.Models.Organizations;
+﻿namespace BudgetRequests.DomainModels.Organizations;
 
 public enum OrganizationPosition
 {
