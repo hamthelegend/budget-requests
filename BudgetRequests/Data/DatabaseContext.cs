@@ -1,25 +1,30 @@
 ﻿using BudgetRequests.Models.Admins;
+using BudgetRequests.Models.BudgetRequests;
 using BudgetRequests.Models.Organizations;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetRequests.Models;
 
-public class DatabaseContext: DbContext
+public class DatabaseContext : DbContext
 {
-
     public const string CONNECTION_STRING =
         @"Server=(localdb)\mssqllocaldb;Database=BudgetRequests;Trusted_Connection=True";
-    
+
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
     }
-    
+
     private DbSet<User> Users { get; set; }
     private DbSet<AdminRole> AdminRoles { get; set; }
     private DbSet<OfficerRole> OfficerRoles { get; set; }
     private DbSet<Organization> Organizations { get; set; }
     private DbSet<Preference> Preferences { get; set; }
+
+    private DbSet<BudgetRequest> BudgetRequests { get; set; }
+    private DbSet<Expense> Expenses { get; set; }
+    private DbSet<AdminSignatory> AdminSignatories { get; set; }
+    private DbSet<OfficerSignatory> OfficerSignatories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -36,7 +41,7 @@ public class DatabaseContext: DbContext
     {
         return GetUsers().FirstOrDefault(x => x.Id == id);
     }
-    
+
     public bool AddUser(User user)
     {
         Users.Add(user);
@@ -58,7 +63,7 @@ public class DatabaseContext: DbContext
     {
         return AdminRoles.Any(x => x.Position == AdminPosition.SuperAdmin);
     }
-    
+
     public AdminRole? GetAdminRole(int id)
     {
         return AdminRoles.FirstOrDefault(x => x.Id == id);
@@ -85,7 +90,7 @@ public class DatabaseContext: DbContext
     {
         return OfficerRoles.FirstOrDefault(x => x.Id == id);
     }
-    
+
     public bool AddOfficerRole(OfficerRole officerRole)
     {
         OfficerRoles.Add(officerRole);
@@ -98,16 +103,74 @@ public class DatabaseContext: DbContext
         return Organizations.ToList();
     }
 
+    public List<Organization> GetOrganizations(User user)
+    {
+        return user.Type == UserType.Admin
+            ? Organizations.Where(organization => organization.Adviser == user).ToList()
+            : OfficerRoles.Where(officerRole => officerRole.Officer == user).Select(x => x.Organization).ToList();
+    }
+
     public Organization? GetOrganization(int id)
     {
         return Organizations.FirstOrDefault(x => x.Id == id);
     }
-    
+
     public bool AddOrganization(Organization organization)
     {
         Organizations.Add(organization);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
+    }
+
+    public User? GetAdmin(AdminPosition position)
+    {
+        return AdminRoles.FirstOrDefault(x => x.Position == position)?.Admin;
+    }
+
+    public List<BudgetRequest> GetBudgetRequestsRequested(User user)
+    {
+        var organizations = GetOrganizations(user);
+        return BudgetRequests.Where(budgetRequest => organizations.Contains(budgetRequest.Requester)).ToList();
+    }
+
+    public List<BudgetRequest> GetBudgetRequests(User user)
+    {
+        if (user.Type == UserType.Officer)
+        {
+            return OfficerSignatories
+                .Where(signatory => signatory.Role.Officer == user)
+                .Select(signatory => signatory.BudgetRequest).ToList();
+        }
+        
+        var budgetRequests = AdminSignatories
+            .Where(signatory => signatory.Role.Admin == user)
+            .Select(signatory => signatory.BudgetRequest);
+        var budgetRequestsToShow = new List<BudgetRequest>();
+        foreach (var budgetRequest in budgetRequests)
+        {
+            var officerSignatories =
+                OfficerSignatories.Where(signatory => signatory.BudgetRequest == budgetRequest);
+            var adminSignatories = 
+                AdminSignatories.Where(signatory => signatory.BudgetRequest == budgetRequest);
+            
+            var assistantDeanSignatory = adminSignatories
+                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
+            var deanSignatory = adminSignatories
+                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
+            var studentAffairsDirectorSignatory = adminSignatories
+                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
+                
+            var allOfficersHaveSigned = officerSignatories.All(x => x.HasSigned);
+                
+            if ((user == assistantDeanSignatory?.Role.Admin && allOfficersHaveSigned) ||
+                (user == deanSignatory?.Role.Admin && assistantDeanSignatory?.HasSigned == true) ||
+                (user == studentAffairsDirectorSignatory?.Role.Admin && deanSignatory?.HasSigned == true))
+            {
+                budgetRequestsToShow.Add(budgetRequest);
+            }
+        }
+
+        return budgetRequestsToShow;
     }
 
     public Preference? GetPreference()
@@ -121,5 +184,4 @@ public class DatabaseContext: DbContext
         var changesSaved = SaveChanges();
         return changesSaved > 0;
     }
-    
 }

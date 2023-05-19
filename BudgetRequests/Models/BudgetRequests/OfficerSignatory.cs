@@ -2,9 +2,10 @@
 
 namespace BudgetRequests.Models.BudgetRequests;
 
-public class Signatory
+public class OfficerSignatory
 {
     public int Id { get; set; }
-    public OfficerRole OfficerRole { get; set; }
+    public BudgetRequest BudgetRequest { get; set; }
+    public OfficerRole Role { get; set; }
     public bool HasSigned { get; set; }
 }
