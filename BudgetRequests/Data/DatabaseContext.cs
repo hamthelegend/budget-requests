@@ -13,7 +13,6 @@ public class DatabaseContext : DbContext
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
-        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     private DbSet<User> Users { get; set; }
@@ -26,6 +25,15 @@ public class DatabaseContext : DbContext
     private DbSet<Expense> Expenses { get; set; }
     private DbSet<AdminSignatory> AdminSignatories { get; set; }
     private DbSet<OfficerSignatory> OfficerSignatories { get; set; }
+
+    // protected override void OnModelCreating(ModelBuilder modelBuilder)
+    // {
+    //     modelBuilder.Entity<OfficerRole>()
+    //         .HasOne(officerRole => officerRole.Organization)
+    //         .WithMany()
+    //         .HasForeignKey(officerRole => officerRole.OrganizationId)
+    //         .IsRequired();
+    // }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -91,7 +99,10 @@ public class DatabaseContext : DbContext
 
     public List<OfficerRole> GetOfficerRoles(User officer)
     {
-        return OfficerRoles.Where(x => x.Officer == officer).ToList();
+        return OfficerRoles
+            .Where(x => x.Officer == officer)
+            .Include(officerRole => officerRole.Organization)
+            .ToList();
     }
 
     public OfficerRole? GetOfficerRole(int id)
@@ -120,9 +131,9 @@ public class DatabaseContext : DbContext
 
     public List<Organization> GetOrganizations(User user)
     {
-        return user.Type == UserType.Admin
+        return /*user.Type == UserType.Admin
             ? Organizations.Where(organization => organization.Adviser == user).ToList()
-            : OfficerRoles.Where(officerRole => officerRole.Officer == user).Select(x => x.Organization).ToList();
+            : */OfficerRoles.Where(officerRole => officerRole.Officer == user).Select(x => x.Organization).ToList();
     }
 
     public Organization? GetOrganization(int id)

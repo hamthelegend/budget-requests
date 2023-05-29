@@ -22,7 +22,7 @@ public class IndexModel : PageModel
     public IActionResult OnGet()
     {
         return RedirectToPage(!_context.HasSuperAdmin()
-            ? "./CreateUser/Index"
+            ? "./Users/Create"
             : HttpContext.Session.IsLoggedIn()
                 ? "./HomePage/Index"
                 : "./Login/Index");
