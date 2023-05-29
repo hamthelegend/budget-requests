@@ -92,6 +92,13 @@ public class DatabaseContext : DbContext
         return changesSaved > 0;
     }
 
+    public bool RemoveAdminRole(AdminRole adminRole)
+    {
+        AdminRoles.Remove(adminRole);
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
     public List<User> GetOfficers()
     {
         return Users.Where(x => x.Type == UserType.Officer).ToList();

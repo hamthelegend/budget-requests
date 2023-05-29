@@ -21,9 +21,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\CreateUser\" />
+      <Folder Include="Pages\BudgetRequests\" />
       <Folder Include="Pages\OfficerRoles\" />
       <Folder Include="Pages\Organizations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\AdminRoles\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\AdminRoles\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\AdminRoles\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\AdminRoles\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\AdminRoles\Index.cshtml" />
     </ItemGroup>
 
 </Project>
