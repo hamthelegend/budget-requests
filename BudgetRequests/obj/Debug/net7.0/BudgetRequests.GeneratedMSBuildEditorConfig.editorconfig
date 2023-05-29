@@ -16,10 +16,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\hamue\RiderProjects\BudgetRequests\BudgetRequests
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/CreateUser/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlVXNlclxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -36,12 +32,72 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/OfficerRoles/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmaWNlclJvbGVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/OfficerRoles/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmaWNlclJvbGVzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/OfficerRoles/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmaWNlclJvbGVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/OfficerRoles/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmaWNlclJvbGVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/OfficerRoles/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZmaWNlclJvbGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Organizations/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Organizations/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Organizations/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Organizations/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Organizations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Users/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Users/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Users/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/hamue/RiderProjects/BudgetRequests/BudgetRequests/Pages/_ViewImports.cshtml]

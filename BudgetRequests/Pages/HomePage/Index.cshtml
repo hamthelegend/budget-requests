@@ -14,18 +14,18 @@
 </head>
 <body style="background: #eeeeee">
 
-<div style="display:flex; justify-content: center">
-    <div>
-        @for (var i = 0; i < 10; i++)
-        {
-            <div class="rounded-rectangle" style="padding: 20px; border-radius: 10px">
-                <h4 class="mb-2">U-fucking-week</h4>
-                <p>
-                    The Institute of Electronics Engineers of the Philippines – AUF Student Chapter has organized
-                    a Webinar this...
-                </p>
-            </div>
-        }
+<div>
+    <div class="row d-flex justify-content-md-center align-items-center vh-100">
+        <div class="col-md-4 rounded-rectangle">
+            <h2 class="mb-4">Welcome, @Model.Name!</h2>
+            <form method="post">
+                <div class="form-group mt-4 mb-2">
+                    <input type="submit" value="Users" class="btn btn-secondary mb-2" style="width: 100%;" asp-page-handler="Users"/>
+                    <input type="submit" value="Organizations" class="btn btn-secondary mb-2" style="width: 100%;" asp-page-handler="Organizations"/>
+                    <input type="submit" value="Logout" class="btn btn-primary" style="width: 100%;" asp-page-handler="Logout"/>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 </body>

@@ -13,6 +13,7 @@ public class DatabaseContext : DbContext
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
+        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     private DbSet<User> Users { get; set; }
@@ -31,7 +32,7 @@ public class DatabaseContext : DbContext
         optionsBuilder.UseSqlServer(CONNECTION_STRING);
     }
 
-    public IEnumerable<User> GetUsers()
+    public List<User> GetUsers()
     {
         var users = Users.ToList();
         return users;
@@ -45,6 +46,13 @@ public class DatabaseContext : DbContext
     public bool AddUser(User user)
     {
         Users.Add(user);
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
+    public bool RemoveUser(User user)
+    {
+        Users.Remove(user);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
     }
@@ -98,6 +106,13 @@ public class DatabaseContext : DbContext
         return changesSaved > 0;
     }
 
+    public bool RemoveOfficerRole(OfficerRole officerRole)
+    {
+        OfficerRoles.Remove(officerRole);
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
     public List<Organization> GetOrganizations()
     {
         return Organizations.ToList();
@@ -118,6 +133,13 @@ public class DatabaseContext : DbContext
     public bool AddOrganization(Organization organization)
     {
         Organizations.Add(organization);
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
+    public bool RemoveOrganization(Organization organization)
+    {
+        Organizations.Remove(organization);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
     }

@@ -35,9 +35,14 @@ public class IndexModel : PageModel
         }
     }
 
-    public IActionResult OnPostCreateAccount()
+    public IActionResult OnPostUsers()
     {
-        return RedirectToPage("../CreateUser/Index");
+        return RedirectToPage("../Users/Index");
+    }
+    
+    public IActionResult OnPostOrganizations()
+    {
+        return RedirectToPage("../Organizations/Index");
     }
 
     public IActionResult OnPostLogout()
