@@ -8,28 +8,34 @@
 <h1>Create</h1>
 
 <h4>Organization</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Organization.Name" class="control-label"></label>
-                <input asp-for="Organization.Name" class="form-control" />
+                <input asp-for="Organization.Name" class="form-control"/>
                 <span asp-validation-for="Organization.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label class="control-label">Adviser</label>
+                <select asp-for="AdviserId" asp-items="Model.Admins" class="form-control mt-1"></select>
+                <span asp-validation-for="AdviserId" class="text-danger mt-1"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Organization.IsStudentCouncil" /> @Html.DisplayNameFor(model => model.Organization.IsStudentCouncil)
+                    <input class="form-check-input" asp-for="Organization.IsStudentCouncil"/>
+                    @Html.DisplayNameFor(model => model.Organization.IsStudentCouncil)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="Organization.GrossBudget" class="control-label"></label>
-                <input asp-for="Organization.GrossBudget" class="form-control" />
+                <input asp-for="Organization.GrossBudget" class="form-control"/>
                 <span asp-validation-for="Organization.GrossBudget" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -38,4 +44,3 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-

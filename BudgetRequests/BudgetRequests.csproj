@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\BudgetRequests\" />
+      <Folder Include="Pages\Requests\" />
       <Folder Include="Pages\OfficerRoles\" />
       <Folder Include="Pages\Organizations\" />
     </ItemGroup>

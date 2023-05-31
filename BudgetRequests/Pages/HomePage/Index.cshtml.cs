@@ -35,6 +35,11 @@ public class IndexModel : PageModel
         }
     }
 
+    public IActionResult OnPostBudgetRequests()
+    {
+        return RedirectToPage("../Requests/Index");
+    }    
+    
     public IActionResult OnPostUsers()
     {
         return RedirectToPage("../Users/Index");

@@ -2,6 +2,7 @@
 
 public enum AdminPosition
 {
+    Adviser,
     AssistantDean,
     Dean,
     StudentAffairsDirector,
