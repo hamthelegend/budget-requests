@@ -11,12 +11,20 @@ public record Signatories(
 {
     public SigningStage GetSigningStage()
     {
-        if (StudentAffairsDirector.HasSigned) 
+        if (StudentAffairsDirector.HasSigned)
             return SigningStage.Approved;
-        if (Dean.HasSigned && AssistantDean.HasSigned) 
+        if (Dean.HasSigned && AssistantDean.HasSigned)
             return SigningStage.StudentAffairsDirector;
-        if (Adviser.HasSigned && President.HasSigned && Auditor.HasSigned && Treasurer.HasSigned) 
+        if (Adviser.HasSigned && President.HasSigned && Auditor.HasSigned && Treasurer.HasSigned)
             return SigningStage.Deans;
         return SigningStage.Organization;
+    }
+
+    public List<Signatory> ToList()
+    {
+        return new()
+        {
+            Treasurer, Auditor, President, Adviser, AssistantDean, Dean, StudentAffairsDirector
+        };
     }
 }

@@ -155,7 +155,10 @@ public class DatabaseContext : DbContext
 
     public Organization? GetOrganization(int id)
     {
-        return Organizations.FirstOrDefault(x => x.Id == id);
+        return Organizations
+            .Where(x => x.Id == id)
+            .Include(x => x.Adviser)
+            .FirstOrDefault();
     }
 
     public bool AddOrganization(Organization organization)
@@ -181,7 +184,11 @@ public class DatabaseContext : DbContext
 
     public BudgetRequest? GetBudgetRequest(int id)
     {
-        return BudgetRequests.FirstOrDefault(budgetRequest => budgetRequest.Id == id);
+        return BudgetRequests
+            .Where(budgetRequest => budgetRequest.Id == id)
+            .Include(budgetRequest => budgetRequest.Requester)
+            .Include(budgetRequest => budgetRequest.Requester.Adviser)
+            .FirstOrDefault();
     }
 
     public List<BudgetRequest> GetBudgetRequestsRequested(User user)
@@ -235,6 +242,23 @@ public class DatabaseContext : DbContext
         return budgetRequestsToShow;
     }
 
+    public bool AddBudgetRequest(BudgetRequest budgetRequest, List<Expense> expenses)
+    {
+        BudgetRequests.Add(budgetRequest);
+        Expenses.AddRange(expenses);
+        AddSignatories(GetDefaultSignatories(budgetRequest));
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
+    public bool RemoveBudgetRequest(BudgetRequest budgetRequest)
+    {
+        BudgetRequests.Remove(budgetRequest);
+        // TODO: Check deletion behavior of expenses and signatories
+        var changesSaved = SaveChanges();
+        return changesSaved > 0;
+    }
+
     private Signatories GetDefaultSignatories(BudgetRequest budgetRequest)
     {
         var officerRoles = OfficerRoles.Where(officerRole => officerRole.Organization == budgetRequest.Requester);
@@ -264,8 +288,9 @@ public class DatabaseContext : DbContext
             {
                 BudgetRequest = budgetRequest,
                 HasSigned = false,
-                Role = AdminRoles.FirstOrDefault(officerRole => 
-                    officerRole.Position == AdminPosition.Adviser && officerRole.Admin == budgetRequest.Requester.Adviser),
+                Role = AdminRoles.FirstOrDefault(officerRole =>
+                    officerRole.Position == AdminPosition.Adviser &&
+                    officerRole.Admin == budgetRequest.Requester.Adviser),
             },
             AssistantDean: new AdminSignatory
             {
@@ -301,31 +326,22 @@ public class DatabaseContext : DbContext
         return changesSaved > 0;
     }
 
-    public bool AddBudgetRequest(BudgetRequest budgetRequest, List<Expense> expenses)
-    {
-        BudgetRequests.Add(budgetRequest);
-        Expenses.AddRange(expenses);
-        AddSignatories(GetDefaultSignatories(budgetRequest));
-        var changesSaved = SaveChanges();
-        return changesSaved > 0;
-    }
-
-    public bool RemoveBudgetRequest(BudgetRequest budgetRequest)
-    {
-        BudgetRequests.Remove(budgetRequest);
-        // TODO: Check deletion behavior of expenses and signatories
-        var changesSaved = SaveChanges();
-        return changesSaved > 0;
-    }
-
     public List<AdminSignatory> GetAdminSignatories(BudgetRequest budgetRequest)
     {
-        return AdminSignatories.Where(adminSignatory => adminSignatory.BudgetRequest == budgetRequest).ToList();
+        return AdminSignatories
+            .Where(adminSignatory => adminSignatory.BudgetRequest == budgetRequest)
+            .Include(adminSignatory => adminSignatory.Role)
+            .Include(adminSignatory => adminSignatory.Role.Admin)
+            .ToList();
     }
 
     public List<OfficerSignatory> GetOfficerSignatories(BudgetRequest budgetRequest)
     {
-        return OfficerSignatories.Where(officerSignatory => officerSignatory.BudgetRequest == budgetRequest).ToList();
+        return OfficerSignatories
+            .Where(officerSignatory => officerSignatory.BudgetRequest == budgetRequest)
+            .Include(officerRole => officerRole.Role)
+            .Include(officerSignatory => officerSignatory.Role.Officer)
+            .ToList();
     }
 
     public Signatories GetSignatories(BudgetRequest budgetRequest)
@@ -333,7 +349,7 @@ public class DatabaseContext : DbContext
         var officerSignatories = GetOfficerSignatories(budgetRequest);
         var adminSignatories = GetAdminSignatories(budgetRequest);
 
-        return new Signatories(
+        var signatories = new Signatories(
             Treasurer: officerSignatories.First(signatory =>
                 signatory.Role!.Position == OrganizationPosition.Treasurer),
             Auditor: officerSignatories.First(signatory =>
@@ -348,6 +364,7 @@ public class DatabaseContext : DbContext
                 signatory.Role!.Position == AdminPosition.Dean),
             StudentAffairsDirector: adminSignatories.First(signatory =>
                 signatory.Role!.Position == AdminPosition.StudentAffairsDirector));
+        return signatories;
     }
 
     public Preference? GetPreference()
