@@ -1,0 +1,73 @@
+@page
+@using BudgetRequests.Models.BudgetRequests
+@model BudgetRequests.Pages.Requests.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BudgetRequest</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BudgetRequest.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BudgetRequest.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BudgetRequest.Body)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BudgetRequest.Body)
+        </dd>
+    </dl>
+    <h4>Signatories</h4>
+    <table class="row">
+        @foreach (var signatory in Model.Signatories.ToList())
+        {
+            <tr>
+                @if (signatory is AdminSignatory adminSignatory)
+                {
+                    <th>
+                        @Html.DisplayFor(model => adminSignatory.Role.Position)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(model => adminSignatory.Role.Admin.FullName)
+                    </td>
+                }
+                @if (signatory is OfficerSignatory officerSignatory)
+                {
+                    <th class="col-sm-2">
+                        @Html.DisplayFor(model => officerSignatory.Role.Position)
+                    </th>
+                    <td class="col-sm-10">
+                        @Html.DisplayFor(model => officerSignatory.Role.Officer.FullName)
+                    </td>
+                }
+                <td>
+                    <form method="post">
+                    @if (signatory.User == Model.User)
+                    {
+                        if (!signatory.HasSigned)
+                        {
+                            <input type="submit" value="Approve" class="btn btn-secondary mb-2" asp-page-handler="Approve" asp-route-id="@Model.BudgetRequest.Id"/>
+                        }
+                        else
+                        {
+                            <input type="submit" value="Disapprove" class="btn btn-secondary mb-2" asp-page-handler="Disapprove" asp-route-id="@Model.BudgetRequest.Id"/>
+                        }
+                    }
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <a asp-page="./Edit">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

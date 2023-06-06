@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using BudgetRequests.Models.Admins;
 
 namespace BudgetRequests.Models.Organizations;

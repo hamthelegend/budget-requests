@@ -1,6 +1,8 @@
-﻿namespace BudgetRequests.Models.Admins;
+﻿using BudgetRequests.Models.Users;
 
-public class AdminRole
+namespace BudgetRequests.Models.Admins;
+
+public class AdminRole : UserRole
 {
     public int Id { get; set; }
     public User Admin { get; set; }

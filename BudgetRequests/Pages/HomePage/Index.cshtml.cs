@@ -35,12 +35,22 @@ public class IndexModel : PageModel
         }
     }
 
-    public async Task<IActionResult> OnPostCreateAccount()
+    public IActionResult OnPostBudgetRequests()
     {
-        return RedirectToPage("../CreateUser/Index");
+        return RedirectToPage("../Requests/Index");
+    }    
+    
+    public IActionResult OnPostUsers()
+    {
+        return RedirectToPage("../Users/Index");
+    }
+    
+    public IActionResult OnPostOrganizations()
+    {
+        return RedirectToPage("../Organizations/Index");
     }
 
-    public async Task<IActionResult> OnPostLogout()
+    public IActionResult OnPostLogout()
     {
         HttpContext.Session.Logout();
         return RedirectToPage("../Index");

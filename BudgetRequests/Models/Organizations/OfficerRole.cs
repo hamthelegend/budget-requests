@@ -1,6 +1,10 @@
-﻿namespace BudgetRequests.Models.Organizations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using BudgetRequests.Models.Users;
 
-public class OfficerRole
+namespace BudgetRequests.Models.Organizations;
+
+public class OfficerRole : UserRole
 {
     public int Id { get; set; }
     public User Officer { get; set; }
