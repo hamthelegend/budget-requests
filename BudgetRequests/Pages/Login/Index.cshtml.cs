@@ -41,7 +41,7 @@ public class IndexModel : PageModel
 
         HttpContext.Session.Login(user);
 
-        return RedirectToPage("../HomePage/Index");
+        return RedirectToPage("../Requests/Index");
 
     }
 }
