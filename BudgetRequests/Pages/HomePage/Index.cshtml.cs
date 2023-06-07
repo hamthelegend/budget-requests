@@ -48,6 +48,11 @@ public class IndexModel : PageModel
     public IActionResult OnPostOrganizations()
     {
         return RedirectToPage("../Organizations/Index");
+    }   
+    
+    public IActionResult OnPostProfile()
+    {
+        return RedirectToPage("../Profile/Index");
     }
 
     public IActionResult OnPostLogout()

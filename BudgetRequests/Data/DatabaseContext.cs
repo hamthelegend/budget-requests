@@ -206,34 +206,26 @@ public class DatabaseContext : DbContext
     {
         if (user.Type == UserType.Officer)
         {
-            return OfficerSignatories
-                .Where(signatory => signatory.Role.Officer == user)
-                .Select(signatory => signatory.BudgetRequest).ToList();
+            var organizations = GetOrganizations(user);
+            return BudgetRequests.Where(budgetRequest => organizations.Contains(budgetRequest.Requester)).ToList();
         }
 
         var budgetRequests = AdminSignatories
             .Where(signatory => signatory.Role.Admin == user)
-            .Select(signatory => signatory.BudgetRequest);
+            .Include(signatory => signatory.BudgetRequest.Requester)
+            .Select(signatory => signatory.BudgetRequest)
+            .ToList();
         var budgetRequestsToShow = new List<BudgetRequest>();
         foreach (var budgetRequest in budgetRequests)
         {
-            var officerSignatories =
-                OfficerSignatories.Where(signatory => signatory.BudgetRequest == budgetRequest);
-            var adminSignatories =
-                AdminSignatories.Where(signatory => signatory.BudgetRequest == budgetRequest);
+            var signatories = GetSignatories(budgetRequest);
+            var signingStage = signatories.GetSigningStage();
 
-            var assistantDeanSignatory = adminSignatories
-                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
-            var deanSignatory = adminSignatories
-                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
-            var studentAffairsDirectorSignatory = adminSignatories
-                .FirstOrDefault(signatory => signatory.Role.Position == AdminPosition.AssistantDean);
-
-            var allOfficersHaveSigned = officerSignatories.All(x => x.HasSigned);
-
-            if ((user == assistantDeanSignatory?.Role.Admin && allOfficersHaveSigned) ||
-                (user == deanSignatory?.Role.Admin && assistantDeanSignatory?.HasSigned == true) ||
-                (user == studentAffairsDirectorSignatory?.Role.Admin && deanSignatory?.HasSigned == true))
+            if ((signingStage >= SigningStage.Organization && budgetRequest.Requester.Adviser == user) ||
+                (signingStage >= SigningStage.Deans &&
+                 (user == signatories.AssistantDean.User || user == signatories.Dean.User)) ||
+                (signingStage >= SigningStage.StudentAffairsDirector &&
+                 user == signatories.StudentAffairsDirector.User))
             {
                 budgetRequestsToShow.Add(budgetRequest);
             }
@@ -351,19 +343,19 @@ public class DatabaseContext : DbContext
 
         var signatories = new Signatories(
             Treasurer: officerSignatories.First(signatory =>
-                signatory.Role!.Position == OrganizationPosition.Treasurer),
+                signatory.Role?.Position == OrganizationPosition.Treasurer),
             Auditor: officerSignatories.First(signatory =>
-                signatory.Role!.Position == OrganizationPosition.Auditor),
+                signatory.Role?.Position == OrganizationPosition.Auditor),
             President: officerSignatories.First(signatory =>
-                signatory.Role!.Position == OrganizationPosition.President),
+                signatory.Role?.Position == OrganizationPosition.President),
             Adviser: adminSignatories.First(signatory =>
-                signatory.Role!.Admin == budgetRequest.Requester.Adviser),
+                signatory.Role?.Admin == budgetRequest.Requester.Adviser),
             AssistantDean: adminSignatories.First(signatory =>
-                signatory.Role!.Position == AdminPosition.AssistantDean),
+                signatory.Role?.Position == AdminPosition.AssistantDean),
             Dean: adminSignatories.First(signatory =>
-                signatory.Role!.Position == AdminPosition.Dean),
+                signatory.Role?.Position == AdminPosition.Dean),
             StudentAffairsDirector: adminSignatories.First(signatory =>
-                signatory.Role!.Position == AdminPosition.StudentAffairsDirector));
+                signatory.Role?.Position == AdminPosition.StudentAffairsDirector));
         return signatories;
     }
 
