@@ -38,7 +38,7 @@ namespace BudgetRequests.Pages.Profile
             }
             User = user;
             Username = user.Username;
-            SignaturePath = Path.Combine(webHostEnvironment.WebRootPath, "images", user.SignatureFilename);
+            SignaturePath = Path.Combine("images", user.SignatureFilename);
             return Page();
         }
 
