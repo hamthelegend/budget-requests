@@ -54,11 +54,22 @@
                     {
                         if (!signatory.HasSigned)
                         {
-                            <input type="submit" value="Approve" class="btn btn-secondary mb-2" asp-page-handler="Approve" asp-route-id="@Model.BudgetRequest.Id"/>
+                            <input type="submit" value="Sign" class="btn btn-secondary mb-2" asp-page-handler="Sign" asp-route-id="@Model.BudgetRequest.Id"/>
                         }
                         else
                         {
-                            <input type="submit" value="Disapprove" class="btn btn-secondary mb-2" asp-page-handler="Disapprove" asp-route-id="@Model.BudgetRequest.Id"/>
+                            <input type="submit" value="Unsign" class="btn btn-secondary mb-2" asp-page-handler="Unsign" asp-route-id="@Model.BudgetRequest.Id"/>
+                        }
+                    }
+                    else
+                    {
+                        if (signatory.HasSigned)
+                        {
+                            <text>Signed</text>
+                        }
+                        else
+                        {
+                            <text>Unsigned</text>
                         }
                     }
                     </form>

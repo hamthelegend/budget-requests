@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BudgetRequests.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,12 @@ namespace BudgetRequests.Pages.Requests
 
         public async Task OnGetAsync()
         {
-            BudgetRequest = _context.GetBudgetRequests();
+            var user = HttpContext.Session.GetLoggedInUser(_context);
+            if (user == null)
+            {
+                return;
+            }
+            BudgetRequest = _context.GetBudgetRequests(user);
         }
     }
 }
