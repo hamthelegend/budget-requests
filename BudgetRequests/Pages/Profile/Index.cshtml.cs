@@ -25,6 +25,7 @@ namespace BudgetRequests.Pages.Profile
         public string Password { get; set; }
         [BindProperty]
         public string RepeatPassword { get; set; }
+        public string SignaturePath { get; set; }
         [BindProperty]
         public IFormFile? Signature { get; set; }
 
@@ -37,6 +38,7 @@ namespace BudgetRequests.Pages.Profile
             }
             User = user;
             Username = user.Username;
+            SignaturePath = Path.Combine(webHostEnvironment.WebRootPath, "images", user.SignatureFilename);
             return Page();
         }
 
