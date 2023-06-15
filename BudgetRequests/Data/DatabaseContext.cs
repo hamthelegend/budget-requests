@@ -85,6 +85,14 @@ public class DatabaseContext : DbContext
         return AdminRoles.FirstOrDefault(x => x.Id == id);
     }
 
+    public AdminRole? GetAdminRole(AdminPosition position)
+    {
+        return AdminRoles
+            .Where(adminRole => adminRole.Position == position)
+            .Include(adminRole => adminRole.Admin)
+            .FirstOrDefault();
+    }
+    
     public bool AddAdminRole(AdminRole adminRole)
     {
         AdminRoles.Add(adminRole);
@@ -102,6 +110,11 @@ public class DatabaseContext : DbContext
     public List<User> GetOfficers()
     {
         return Users.Where(x => x.Type == UserType.Officer).ToList();
+    }
+
+    public User? GetOfficer(int id)
+    {
+        return Users.FirstOrDefault(user => user.Id == id);
     }
 
     public List<OfficerRole> GetOfficerRoles(User officer)
@@ -179,7 +192,12 @@ public class DatabaseContext : DbContext
 
     public User? GetAdmin(AdminPosition position)
     {
-        return AdminRoles.FirstOrDefault(x => x.Position == position)?.Admin;
+        return AdminRoles
+            .Where(x => x.Position == position)
+            .Include(x => x.Admin)
+            .OrderBy(x => x.Id)
+            .LastOrDefault()
+            ?.Admin;
     }
 
     public BudgetRequest? GetBudgetRequest(int id)
@@ -249,6 +267,11 @@ public class DatabaseContext : DbContext
         // TODO: Check deletion behavior of expenses and signatories
         var changesSaved = SaveChanges();
         return changesSaved > 0;
+    }
+
+    public List<Expense> GetExpenses(BudgetRequest budgetRequest)
+    {
+        return Expenses.Where(expense => expense.BudgetRequest == budgetRequest).ToList();
     }
 
     private Signatories GetDefaultSignatories(BudgetRequest budgetRequest)

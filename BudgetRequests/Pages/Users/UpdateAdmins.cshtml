@@ -1,0 +1,43 @@
+﻿@page
+@model BudgetRequests.Pages.Users.UpdateAdmins
+
+@{}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div class="create-container">
+    <div class="box form-box">
+        <header>Update College Admins</header>
+        <form action="" method="post">
+
+            <div class="cardTitle">Assistant Dean</div>
+            <div class="select-container">
+                <select asp-for="AssistantDeanId" asp-items="Model.Admins" class="form-control mt-1"></select>
+                <span asp-validation-for="AssistantDeanId" class="text-danger mt-1"></span>
+            </div>
+
+            <div class="cardTitle">Dean</div>
+            <div class="select-container">
+                <select asp-for="DeanId" asp-items="Model.Admins" class="form-control mt-1"></select>
+                <span asp-validation-for="DeanId" class="text-danger mt-1"></span>
+            </div>
+
+            <div class="cardTitle">Student Affairs Director</div>
+            <div class="select-container">
+                <select asp-for="StudentAffairsDirectorId" asp-items="Model.Admins" class="form-control mt-1"></select>
+                <span asp-validation-for="StudentAffairsDirectorId" class="text-danger mt-1"></span>
+            </div>
+
+            <div class="field">
+                <input type="submit" class="btn" name="submit" value="Submit" required>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

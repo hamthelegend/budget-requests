@@ -20,7 +20,9 @@ namespace BudgetRequests.Pages.Requests
             _context = context;
         }
 
-        public IList<BudgetRequest> BudgetRequest { get; set; } = default!;
+        public IList<BudgetRequest> BudgetRequests { get; set; } = default!;
+
+        public User User { get; set; } = default;
 
         public async Task OnGetAsync()
         {
@@ -29,7 +31,16 @@ namespace BudgetRequests.Pages.Requests
             {
                 return;
             }
-            BudgetRequest = _context.GetBudgetRequests(user);
+
+            User = user;
+            BudgetRequests = _context.GetBudgetRequests(user);
+        }
+
+        public string GetFormattedTotalExpenses(BudgetRequest budgetRequest)
+        {
+            var expenses = _context.GetExpenses(budgetRequest);
+            var totalExpenses = expenses.Sum(expense => expense.Amount);
+            return $"₱ {totalExpenses.ToString("0.00")}";
         }
     }
 }

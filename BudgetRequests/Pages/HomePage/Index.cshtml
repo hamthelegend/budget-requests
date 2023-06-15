@@ -34,7 +34,7 @@
 <div class="homepage-container">
     <div class="navigation">
         <ul>
-            <li>
+            <li class="hovered">
                 <a href="#">
                     <span class="icon">
                         <ion-icon name="cash-outline"></ion-icon>
@@ -85,6 +85,14 @@
             <li>
                 <a href="#">
                     <span class="icon">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </span>
+                    <span class="title">Admin/User</span>
+                </a>
+            </li>
+            <li>
+                <a asp-page="../Login/Index">
+                    <span class="icon">
                         <ion-icon name="log-out-outline"></ion-icon>
                     </span>
                     <span class="title">Logout</span>
@@ -92,6 +100,8 @@
             </li>
         </ul>
     </div>
+
+
     <!--menu-->
     <div class="main">
         <div class="topbar">
@@ -106,86 +116,26 @@
                 </label>
             </div>
         </div>
-        <!--cards-->
+
+        <button class="create-btn">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            &nbsp;Create Request
+        </button>
+
+        <!--data-->
         <div class="cardBox">
             <div class="card">
                 <div>
                     <div class="cardTitle">Placeholder1</div>
-                    <div class="cardBody">Placeholder1 Placeholder1 Placeholder1 Placeholder1</div>
+                    <div class="cardBody">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </div>
+                    <button class="card-btn">
+                        &#x20B1
+                    </button>
                 </div>
-            </div>
-            <div class="card">
-                <div>
-                    <div class="cardTitle">Placeholder2</div>
-                    <div class="cardBody">Placeholder2 Placeholder2 Placeholder2 Placeholder2</div>
-                </div>
-            </div>
-            <div class="card">
-                <div>
-                    <div class="cardTitle">Placeholder3</div>
-                    <div class="cardBody">Placeholder3 Placeholder3 Placeholder3 Placeholder3</div>
-                </div>
-            </div>
-            <div class="card">
-                <div>
-                    <div class="cardTitle">Placeholder4</div>
-                    <div class="cardBody">Placeholder4 Placeholder4 Placeholder4 Placeholder4</div>
-                </div>
-            </div>
-        </div>
-
-        <!--data-->
-        <div class="requests">
-            <!--recent request list-->
-            <div class="recentRequests">
-                <div class="cardHeader">
-                    <h2>Recent Requests</h2>
-                    <a href="#" class="btn">View All Requests</a>
-                </div>
-                <table>
-                    <thead>
-                    <tr>
-                        <td>Event</td>
-                        <td>Amount</td>
-                        <td>Name</td>
-                        <td>Status</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>University Week1</td>
-                        <td>PHP 50,000</td>
-                        <td>Jericho Diaz</td>
-                        <td>
-                            <span class="status processing">Processing</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>University Week2</td>
-                        <td>PHP 50,000</td>
-                        <td>Jericho Diaz</td>
-                        <td>
-                            <span class="status approved">Approved</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>University Week3</td>
-                        <td>PHP 50,000</td>
-                        <td>Jericho Diaz</td>
-                        <td>
-                            <span class="status rejected">Rejected</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>University Week4</td>
-                        <td>PHP 50,000</td>
-                        <td>Jericho Diaz</td>
-                        <td>
-                            <span class="status completed">Completed</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -194,26 +144,23 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <script>
-    // TODO: Fix toggle not working
-    // toggle
-    let toggle = document.querySelector('.toggle');
-    let navigation = document.querySelector('.navigation');
-    let main = document.querySelector('.main');
-
-    toggle.onclick = function() {
-    navigation.classList.toggle('active');
-    main.classList.toggle('active');
-    }
-
-    // hover
-    let list = document.querySelectorAll('.navigation li');
-    function activeLink(){
-    list.forEach((item) => item.classList.remove('hovered'));
-    this.classList.add('hovered');
-    }
-    list.forEach((item) => item.addEventListener('mouseover',activeLink));
-    
-
-</script>
+    //   // toggle
+    //   let toggle = document.querySelector('.toggle');
+    //   let navigation = document.querySelector('.navigation');
+    //   let main = document.querySelector('.main');
+    //
+    //   toggle.onclick = function() {
+    //     navigation.classList.toggle('active');
+    //     main.classList.toggle('active');
+    //   }
+    //
+    //   // hover
+    //   let list = document.querySelectorAll('.navigation li');
+    //   function activeLink(){
+    //     list.forEach((item) => item.classList.remove('hovered'));
+    //     this.classList.add('hovered');
+    //   }
+    //   list.forEach((item) => item.addEventListener('mouseover',activeLink));
+    </script>
 </body>
 </html>

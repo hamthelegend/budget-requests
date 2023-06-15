@@ -5,11 +5,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Organization</h4>
-<hr/>
-<div class="row">
+@*<div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -39,8 +35,63 @@
             </div>
         </form>
     </div>
-</div>
+</div>*@
 
-<div>
-    <a asp-page="Index">Back to List</a>
+<div class="create-container">
+    <div class="box form-box">
+        <header>Add Organization</header>
+        <form action="" method="post">
+            <div class="field input">
+                <label asp-for="Organization.Name" class="control-label"></label>
+                <input asp-for="Organization.Name" class="form-control"/>
+                <span asp-validation-for="Organization.Name" class="text-danger"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">Adviser</label>
+                <select asp-for="AdviserId" asp-items="Model.Admins" class="form-control mt-1"></select>
+                <span asp-validation-for="AdviserId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">President</label>
+                <select asp-for="PresidentId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="PresidentId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">Vice President</label>
+                <select asp-for="VicePresidentId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="VicePresidentId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">Secretary</label>
+                <select asp-for="SecretaryId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="SecretaryId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">Treasurer</label>
+                <select asp-for="TreasurerId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="TreasurerId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">Auditor</label>
+                <select asp-for="AuditorId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="AuditorId" class="text-danger mt-1"></span>
+            </div>
+            
+            <div class="field input mt-2">
+                <label class="control-label">P.R.O.</label>
+                <select asp-for="PublicRelationsOfficerId" asp-items="Model.Officers" class="form-control mt-1"></select>
+                <span asp-validation-for="PublicRelationsOfficerId" class="text-danger mt-1"></span>
+            </div>
+
+            <div class="field">
+                <input type="submit" class="btn" name="submit" value="Submit" required>
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,0 +1,47 @@
+﻿@page
+@model BudgetRequests.Pages.Users.CollegeAdmins
+
+@{}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div class="create-container">
+  <div class="box form-box">
+    <header>College Admins</header>
+      <div class="cardBox2">
+
+        <div class="card">
+          <div>
+            <div class="cardTitle">Assistant Dean</div>
+            <div class="cardBody">@(Model.AssistantDean != null ? Model.AssistantDean.FullName : "Unassigned")</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div>
+            <div class="cardTitle">Dean</div>
+            <div class="cardBody">@(Model.Dean != null ? Model.Dean.FullName : "Unassigned")</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <div class="cardTitle">Student Affairs Director</div>
+            <div class="cardBody">@(Model.StudentAffairsDirector != null ? Model.StudentAffairsDirector.FullName : "Unassigned")</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <a class="btn btn-primary" type="submit" asp-page="./UpdateAdmins">Update College Admins</a>
+        </div>
+
+      </div>
+  </div>
+</div>
+</body>
+</html>

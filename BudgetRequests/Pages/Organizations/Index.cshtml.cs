@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BudgetRequests.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,17 @@ namespace BudgetRequests.Pages.Organizations
         [BindProperty]
         public List<Organization> Organizations { get; set; } = new();
 
+        public User User { get; set; } = new();
+
         public IActionResult OnGet()
         {
+            var user = HttpContext.Session.GetLoggedInUser(_context);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            User = user;
             Organizations = _context.GetOrganizations();
             return Page();
         }
