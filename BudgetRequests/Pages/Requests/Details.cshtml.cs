@@ -43,12 +43,13 @@ namespace BudgetRequests.Pages.Requests
             return Page();
         }
 
-        public IActionResult OnPostSign(int? id)
+        public IActionResult OnPostSign(int? budgetRequestId, int? signatoryId, bool isAdmin)
         {
             var user = HttpContext.Session.GetLoggedInUser(_context);
-            var budgetRequest = _context.GetBudgetRequest(id ?? -1);
+            var budgetRequest = _context.GetBudgetRequest(budgetRequestId ?? -1);
+            var signatory = _context.GetSignatory(signatoryId ?? -1, isAdmin);
 
-            if (user == null || budgetRequest == null)
+            if (user == null || budgetRequest == null || signatory == null)
             {
                 return NotFound();
             }
@@ -57,18 +58,18 @@ namespace BudgetRequests.Pages.Requests
             BudgetRequest = budgetRequest;
             Signatories = _context.GetSignatories(budgetRequest);
             
-            var signatory = Signatories.ToList().First(signatory => signatory.User == User);
             signatory.HasSigned = true;
             _context.SaveChanges();
             return Page();
         }
 
-        public IActionResult OnPostUnsign(int? id)
+        public IActionResult OnPostUnsign(int? budgetRequestId, int? signatoryId, bool isAdmin)
         {
             var user = HttpContext.Session.GetLoggedInUser(_context);
-            var budgetRequest = _context.GetBudgetRequest(id ?? -1);
+            var budgetRequest = _context.GetBudgetRequest(budgetRequestId ?? -1);
+            var signatory = _context.GetSignatory(signatoryId ?? -1, isAdmin);
 
-            if (user == null || budgetRequest == null)
+            if (user == null || budgetRequest == null || signatory == null)
             {
                 return NotFound();
             }
@@ -77,7 +78,6 @@ namespace BudgetRequests.Pages.Requests
             BudgetRequest = budgetRequest;
             Signatories = _context.GetSignatories(budgetRequest);
             
-            var signatory = Signatories.ToList().First(signatory => signatory.User == User);
             signatory.HasSigned = false;
             _context.SaveChanges();
             return Page();

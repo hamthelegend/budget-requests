@@ -12,4 +12,6 @@ public class Organization
     public bool IsStudentCouncil { get; set; }
     [Column(TypeName = "decimal(18,2)")]
     public decimal GrossBudget { get; set; }
+
+    public bool IsActive { get; set; } = true;
 }

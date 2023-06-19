@@ -109,7 +109,7 @@ public class CreateModel : PageModel
             HttpContext.Session.Login(user);
         }
         
-        return RedirectToPage("../HomePage/Index");
+        return !HasSuperAdmin ? RedirectToPage("../Requests/Index") : RedirectToPage("./Index");
     }
 
     public void SetUserType(string userType)

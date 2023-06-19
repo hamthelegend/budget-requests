@@ -21,6 +21,7 @@ namespace BudgetRequests.Pages.Requests
         }
 
         public IList<BudgetRequest> BudgetRequests { get; set; } = default!;
+        public List<bool> IsApproved { get; set; } = new();
 
         public User User { get; set; } = default;
 
@@ -34,6 +35,10 @@ namespace BudgetRequests.Pages.Requests
 
             User = user;
             BudgetRequests = _context.GetBudgetRequests(user);
+            foreach (var budgetRequest in BudgetRequests)
+            {
+                IsApproved.Add(_context.IsApproved(budgetRequest));
+            }
         }
 
         public string GetFormattedTotalExpenses(BudgetRequest budgetRequest)

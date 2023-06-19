@@ -725,3 +725,207 @@ body {
     border: 1px solid black;
     outline: none;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;500&family=Lexend:wght@200;300&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Lexend', sans-serif;
+}
+
+body{
+    background: whitesmoke;
+}
+
+.edit-request-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+}
+
+.edit-request-box{
+    background: #f1f3f4;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 128px 0 rgba(0,0,0,0.1), 0 32px 64px -48px rgba(0,0,0,0.2);
+}
+
+.edit-request-form-box{
+    width: 900px;
+    margin: 0 10px;
+}
+
+.edit-request-form-box header{
+    font-size: 25px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 1px #f1f3f4;
+    margin-bottom: 10px;
+}
+
+.edit-request-form-box form textarea{
+    display: flex;
+    margin-top: 2px;
+    margin-bottom: 15px;
+    text-align: justify-all;
+    font-size: 15px;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+    resize: vertical;
+    min-height: 200px;
+    width: 100%;
+}
+
+.edit-request-form-box .input input{
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+}
+
+.edit-request-form-box form .expInput{
+    display: flex;
+    width: 50%;
+    margin-bottom: 10px;
+    flex-direction: column;
+}
+
+.edit-request-cardBox{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+}
+
+.edit-request-cardBox .card{
+    position: relative;
+    background: white;
+    padding: 10px;
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.edit-request-cardBox .cardTitle{
+    position: relative;
+    font-weight: 500;
+    font-size: 16px;
+    color: #224275;
+    margin-bottom: 10px;
+}
+
+.edit-request-cardBox .card .cardBody{
+    color: #222222;
+    font-size: 14px;
+
+}
+
+.recent-grid{
+    display: grid;
+    grid-template-columns: 50% auto;
+    grid-gap: 1em;
+}
+
+.signatoryCard {
+    background: white;
+    border-radius: 10px;
+}
+
+.cardHeader, .card-body {
+    padding: 1em;
+    border-bottom: 1px solid lightgrey;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgrey;
+}
+
+.signatory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px;
+}
+
+.sign-buttons {
+    display: flex;
+}
+
+.btn1{
+    height: 30px;
+    background: transparent;
+    border: 1px solid;
+    width: 100%;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.btn1:hover, .btn1:active {
+    background-color: #0066cc;
+    color: white;
+}
+
+.btn2{
+    height: 30px;
+    background: transparent;
+    border: 1px solid;
+    width: 100%;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.btn2:hover, .btn2:active {
+    background-color: #0066cc;
+    color: white;
+}
+
+.submit{
+    width: 100%;
+}
+
+.button{
+    height: 35px;
+    background: #0066cc;
+    border:0;
+    width: 100%;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .3s;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.button:hover, .button:active {
+    background-color: #0693e3;
+    color: white;
+}
+
+.submit{
+    width: 100%;
+}

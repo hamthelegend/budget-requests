@@ -92,8 +92,10 @@
 
         <!--data-->
         <div class="cardBox">
-            @foreach (var budgetRequest in Model.BudgetRequests)
+            @for (var index = 0; index < Model.BudgetRequests.Count; index++)
             {
+                var budgetRequest = Model.BudgetRequests[index];
+                var isApproved = Model.IsApproved[index];
                 <a asp-page="Details" asp-route-id="@budgetRequest.Id">
                     <div class="card">
                         <div>
@@ -107,6 +109,7 @@
                             @* TODO: figure this out *@
                             <div style="align-content: center">
                                 <span>@budgetRequest.Requester.Name</span>
+                                <span>@(isApproved ? "Approved" : "Pending")</span>
                                 <button class="card-btn">@Model.GetFormattedTotalExpenses(budgetRequest)</button>
                             </div>
                         </div>

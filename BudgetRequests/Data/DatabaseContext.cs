@@ -232,6 +232,7 @@ public class DatabaseContext : DbContext
             .Where(signatory => signatory.Role.Admin == user)
             .Include(signatory => signatory.BudgetRequest.Requester)
             .Select(signatory => signatory.BudgetRequest)
+            .Distinct()
             .ToList();
         var budgetRequestsToShow = new List<BudgetRequest>();
         foreach (var budgetRequest in budgetRequests)
@@ -380,6 +381,25 @@ public class DatabaseContext : DbContext
             StudentAffairsDirector: adminSignatories.First(signatory =>
                 signatory.Role?.Position == AdminPosition.StudentAffairsDirector));
         return signatories;
+    }
+
+    public Signatory? GetSignatory(int id, bool isAdmin)
+    {
+        return isAdmin
+            ? AdminSignatories
+                .Where(adminSignatory => adminSignatory.Id == id)
+                .Include(adminSignatory => adminSignatory.Role)
+                .FirstOrDefault()
+            : OfficerSignatories
+                .Where(officerSignatory => officerSignatory.Id == id)
+                .Include(officerSignatory => officerSignatory.Role)
+                .FirstOrDefault();
+    }
+
+    public bool IsApproved(BudgetRequest budgetRequest)
+    {
+        var signatories = GetSignatories(budgetRequest);
+        return signatories.ToList().All(signatory => signatory.HasSigned);
     }
 
     public Preference? GetPreference()
