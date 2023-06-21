@@ -154,15 +154,26 @@ public class DatabaseContext : DbContext
     public List<Organization> GetOrganizations(User user)
     {
         return user.Type == UserType.Admin
-            ? Organizations.Where(organization => organization.Adviser == user).ToList()
-            : OfficerRoles.Where(officerRole => officerRole.Officer == user).Select(x => x.Organization).ToList();
+            ? Organizations
+                .Where(organization => organization.Adviser == user)
+                .Include(organization => organization.Adviser)
+                .Distinct()
+                .ToList()
+            : OfficerRoles
+                .Where(officerRole => officerRole.Officer == user)
+                .Include(officerRole => officerRole.Organization.Adviser)
+                .Select(x => x.Organization)
+                .Distinct()
+                .ToList();
     }
 
     public List<Organization> GetOfficerOrganizations(User officer)
     {
         return OfficerRoles
             .Where(officerRole => officerRole.Officer == officer)
-            .Select(officerRole => officerRole.Organization)
+            .Include(officerRole => officerRole.Organization.Adviser)
+            .Select(x => x.Organization)
+            .Distinct()
             .ToList();
     }
 

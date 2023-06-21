@@ -1,13 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "qhwVsvseh3MaBrgGPNkuyT+lfjZVTahbjTCI7yJE7NisLeC4TMokyatKDqCYm6n96+9VpDwRPmi7rEw7LVcb/Q==",
+  "dgSpecHash": "7IYh4PnrL9EQhObZrp40S1XAGucUMzJnP3fjOi8mjBTeJ5dB2YL/hYYLauA8gWA5aWBViYtDUvh2yrElP8If4A==",
   "success": true,
   "projectFilePath": "C:\\Users\\hamue\\RiderProjects\\BudgetRequests\\BudgetRequests\\BudgetRequests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hamue\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\hamue\\.nuget\\packages\\bootstrapicons.aspnetcore\\1.9.2\\bootstrapicons.aspnetcore.1.9.2.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\hamue\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\hamue\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.11\\microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",
+    "C:\\Users\\hamue\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\microsoft.build\\17.3.2\\microsoft.build.17.3.2.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\microsoft.build.framework\\17.3.2\\microsoft.build.framework.17.3.2.nupkg.sha512",
