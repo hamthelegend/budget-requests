@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BudgetRequests.Pages.Login;
 
@@ -19,34 +20,62 @@ public class IndexModel : PageModel
         _context = context;
     }
     
+    public string? GlobalError { get; set; }
+
     [BindProperty]
     [Display(Name = "Username")]
-    public string Username { get; set; }
-    
+    public string? Username { get; set; }
+
+    public string? UsernameError { get; set; }
+
     [BindProperty]
     [Display(Name = "Password")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
+
+    public string? PasswordError { get; set; }
 
     public void OnGet()
     {
         HttpContext.Session.Logout();
     }
-    
+
     public IActionResult OnPost()
     {
-        if (!ModelState.IsValid)
+        var hasError = false;
+
+        if (Username.IsNullOrEmpty())
+        {
+            UsernameError = "Username is required";
+            hasError = true;
+        }
+
+        if (Password.IsNullOrEmpty())
+        {
+            PasswordError = "Password is required";
+            hasError = true;
+        }
+
+        if (hasError)
         {
             return Page();
         }
 
-        var user = _context.GetUsers().FirstOrDefault(x => x.Username == Username);
-        var passwordHash = Password.ComputeHash(Convert.FromBase64String(user?.PasswordSalt ?? ""));
+        var user = _context.GetUser(Username ?? "");
+        var passwordHash = Password?.ComputeHash(Convert.FromBase64String(user?.PasswordSalt ?? ""));
 
-        if (user == null || user.PasswordHash != passwordHash) return Page();
+        if (user == null || user.PasswordHash != passwordHash)
+        {
+            GlobalError = "Username or password is incorrect";
+            hasError = true;
+        }
 
-        HttpContext.Session.Login(user);
+        if (hasError)
+        {
+            return Page();
+        }
+
+        HttpContext.Session.Login(user!);
 
         return RedirectToPage("../Requests/Index");
-
     }
 }

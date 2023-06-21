@@ -11,17 +11,17 @@
 @*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
 @*             <div class="form-group"> *@
 @*                 <label asp-for="Title" class="control-label"></label> *@
-@*                 <input asp-for="Title" class="form-control"/> *@
+@*                 <input asp-for="Title" class="form-control mt-2"/> *@
 @*                 <span asp-validation-for="Title" class="text-danger"></span> *@
 @*             </div> *@
 @*             <div class="form-group"> *@
 @*                 <label asp-for="Body" class="control-label"></label> *@
-@*                 <input asp-for="Body" class="form-control"/> *@
+@*                 <input asp-for="Body" class="form-control mt-2"/> *@
 @*                 <span asp-validation-for="Body" class="text-danger"></span> *@
 @*             </div> *@
 @*             <div class="form-group mt-2"> *@
 @*                 <label class="control-label">Requester</label> *@
-@*                 <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-1"></select> *@
+@*                 <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-2 mt-1"></select> *@
 @*                 <span asp-validation-for="OrganizationId" class="text-danger mt-1"></span> *@
 @*             </div> *@
 @*             <div class="form-group"> *@
@@ -37,29 +37,34 @@
         <form action="" method="post">
             <div class="field input">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control"/>
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Title" class="form-control mt-2"/>
+                <span class="error-text">@Model.TitleError</span>
             </div>
             <div class="field input">
                 <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control"/>
-                <span asp-validation-for="Body" class="text-danger"></span>
+                <input asp-for="Body" class="form-control mt-2"/>
+                <span class="error-text">@Model.BodyError</span>
             </div>
-            <div class="field input mt-2">
+            <div class="field input">
                 <label class="control-label">Requester</label>
-                <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-1"></select>
-                <span asp-validation-for="OrganizationId" class="text-danger mt-1"></span>
+                <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-2"></select>
+                <span class="error-text">@Model.OrganizationError</span>
+            </div>
+            <div class="field input">
+                <label asp-for="DateNeeded" class="control-label"></label>
+                <input asp-for="DateNeeded" class="form-control mt-2"/>
+                <span class="error-text">@Model.DateNeededError</span>
             </div>
 
-            <div class="field input">
-                <label for="expense">Expense</label>
-                <input type="text" name="expense" id="expense" autocomplete="off" required>
-            </div>
-
-            <div class="field input">
-                <label for="amount">Amount</label>
-                <input type="number" name="amount" id="amount" autocomplete="off" placeholder="&#8369;" required>
-            </div>
+            @* <div class="field input"> *@
+            @*     <label for="expense">Expense</label> *@
+            @*     <input type="text" name="expense" id="expense" autocomplete="off" required> *@
+            @* </div> *@
+            @* *@
+            @* <div class="field input"> *@
+            @*     <label for="amount">Amount</label> *@
+            @*     <input type="number" name="amount" id="amount" autocomplete="off" placeholder="&#8369;" required> *@
+            @* </div> *@
 
             <script>
             function show(a){

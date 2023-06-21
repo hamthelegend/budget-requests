@@ -1,4 +1,6 @@
 @page
+@using BudgetRequests.Models
+@using Microsoft.IdentityModel.Tokens
 @model BudgetRequests.Pages.Requests.IndexModel
 
 @{
@@ -70,9 +72,22 @@
                 </label>
             </div>
 
-            <a asp-page="Create" type="button" class="unstyled-a create-btn">
-                <div class="col-md-auto ms-4">Create Request</div>
-            </a>
+            @if (Model.CanCreateRequests)
+            {
+                if (Model.AreCollegeAdminsSet)
+                {
+                    <a asp-page="Create" type="button" class="unstyled-a create-btn">
+                        Create Request
+                    </a>
+                }
+                else
+                {
+                    <a type="button" class="unstyled-a create-btn" onclick="$('#myModal').modal('show');">
+                        Create Request
+                    </a>
+                }
+            }
+
         </div>
 
         <!--data-->
@@ -100,9 +115,9 @@
                             
                             <div class="row-md-auto cardTitle">@budgetRequest.Title</div>
                             <div class="row-md-auto cardBody">@budgetRequest.Body</div>
+                            <div class="row-md-auto cardBody">@budgetRequest.Requester.Name</div>
                             <div class="row-md-auto">
-                                <div class="col-md-auto card-btn" style="float: left">@budgetRequest.Requester.Name</div>
-                                <div class="col-md-auto card-btn">@Model.GetFormattedTotalExpenses(budgetRequest)</div>
+                                <div class="col-md-auto card-btn" style="float: left">@Model.GetFormattedTotalExpenses(budgetRequest)</div>
                                 <div class="col-md-auto card-btn">@(isApproved ? "Approved" : "Pending")</div>
                             </div>
                         </div>
@@ -112,6 +127,25 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">College Admins Unset</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Your college admins are not yet set. Ask your administrators to set these before you can make budget requests.
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 

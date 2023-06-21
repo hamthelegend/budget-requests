@@ -19,22 +19,22 @@ namespace BudgetRequests.Pages.Users
             _context = context;
         }
 
-        public List<User> Users { get;set; } = default!;
-        public User User { get; set; } = default;
+        public List<User> Users { get; set; } = default!;
+        public new User User { get; set; }
+        public bool IsSuperAdmin { get; set; } = false;
 
         public IActionResult OnGetAsync()
         {
             var user = HttpContext.Session.GetLoggedInUser(_context);
+            
             if (user == null)
             {
-                return NotFound();
+                return RedirectToPage("../Login/Index");
             }
-
+            
             User = user;
-            if (_context.GetUsers() != null)
-            {
-                Users = _context.GetUsers();
-            }
+            Users = _context.GetUsers();
+            IsSuperAdmin = _context.IsSuperAdmin(user);
 
             return Page();
         }

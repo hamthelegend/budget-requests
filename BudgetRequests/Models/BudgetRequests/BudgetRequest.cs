@@ -13,5 +13,5 @@ public class BudgetRequest
     [DataType(DataType.Date)]
     public DateTime DateRequested { get; set; }
     [DataType(DataType.Date)]
-    public DateTime DateApproved { get; set; }
+    public DateTime DateNeeded { get; set; }
 }

@@ -40,16 +40,17 @@
 <div class="login-container">
     <div class="box form-box">
         <h3>Budget Requests</h3>
+        <span class="error-text">@Model.GlobalError</span>
         <form action="" method="post" class="mt-3">
             <div class="field input">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control mt-2"/>
-                <span asp-validation-for="Username" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.UsernameError</span>
             </div>
             <div class="field input">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control mt-2" type="password"/>
-                <span asp-validation-for="Password" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.PasswordError</span>
             </div>
             <div class="field">
                 <input type="submit" value="Login" class="btn btn-primary"/>

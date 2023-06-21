@@ -40,10 +40,31 @@ public class DatabaseContext : DbContext
         optionsBuilder.UseSqlServer(CONNECTION_STRING);
     }
 
+    public bool IsSuperAdmin(User user)
+    {
+        return AdminRoles.Any(adminRole => adminRole.Admin == user);
+    }
+
+    public bool CanCreateRequests(User user)
+    {
+        var organizations = GetOfficerOrganizations(user);
+        return user.Type == UserType.Officer && organizations.Count > 0;
+    }
+
+    public bool AreCollegeAdminsSet()
+    {
+        var collegeAdmins = GetCollegeAdmins();
+        return collegeAdmins.ToList().All(admin => admin != null);
+    }
+
+    public User? GetUser(string username)
+    {
+        return Users.FirstOrDefault(user => user.Username == username);
+    }
+
     public List<User> GetUsers()
     {
-        var users = Users.ToList();
-        return users;
+        return Users.ToList();
     }
 
     public User? GetUser(int id)
@@ -80,6 +101,63 @@ public class DatabaseContext : DbContext
         return AdminRoles.Any(x => x.Position == AdminPosition.SuperAdmin);
     }
 
+    public CollegeAdmins GetCollegeAdmins()
+    {
+        var assistantDean = AdminRoles
+            .Where(adminRole => adminRole.Position == AdminPosition.AssistantDean)
+            .Include(adminRole => adminRole.Admin)
+            .OrderBy(adminRole => adminRole.Id)
+            .LastOrDefault()
+            ?.Admin;
+        var dean = AdminRoles
+            .Where(adminRole => adminRole.Position == AdminPosition.Dean)
+            .Include(adminRole => adminRole.Admin)
+            .OrderBy(adminRole => adminRole.Id)
+            .LastOrDefault()
+            ?.Admin;
+        var studentAffairsDirector = AdminRoles
+            .Where(adminRole => adminRole.Position == AdminPosition.StudentAffairsDirector)
+            .Include(adminRole => adminRole.Admin)
+            .OrderBy(adminRole => adminRole.Id)
+            .LastOrDefault()
+            ?.Admin;
+        return new CollegeAdmins(assistantDean, dean, studentAffairsDirector);
+    }
+
+    public void SetCollegeAdmins(CollegeAdmins collegeAdmins)
+    {
+        var oldCollegeAdmins = GetCollegeAdmins();
+        
+        if (collegeAdmins.AssistantDean != null && collegeAdmins.AssistantDean != oldCollegeAdmins.AssistantDean)
+        {
+            AdminRoles.Add(new AdminRole
+            {
+                Admin = collegeAdmins.AssistantDean,
+                Position = AdminPosition.AssistantDean,
+            });
+        }
+        
+        if (collegeAdmins.Dean != null && collegeAdmins.Dean != oldCollegeAdmins.Dean)
+        {
+            AdminRoles.Add(new AdminRole
+            {
+                Admin = collegeAdmins.Dean,
+                Position = AdminPosition.Dean,
+            });
+        }
+        
+        if (collegeAdmins.StudentAffairsDirector != null && collegeAdmins.StudentAffairsDirector != oldCollegeAdmins.StudentAffairsDirector)
+        {
+            AdminRoles.Add(new AdminRole
+            {
+                Admin = collegeAdmins.StudentAffairsDirector,
+                Position = AdminPosition.StudentAffairsDirector,
+            });
+        }
+
+        SaveChanges();
+    }
+
     public AdminRole? GetAdminRole(int id)
     {
         return AdminRoles.FirstOrDefault(x => x.Id == id);
@@ -90,7 +168,8 @@ public class DatabaseContext : DbContext
         return AdminRoles
             .Where(adminRole => adminRole.Position == position)
             .Include(adminRole => adminRole.Admin)
-            .FirstOrDefault();
+            .OrderBy(adminRole => adminRole.Id)
+            .LastOrDefault();
     }
     
     public bool AddAdminRole(AdminRole adminRole)
@@ -159,12 +238,7 @@ public class DatabaseContext : DbContext
                 .Include(organization => organization.Adviser)
                 .Distinct()
                 .ToList()
-            : OfficerRoles
-                .Where(officerRole => officerRole.Officer == user)
-                .Include(officerRole => officerRole.Organization.Adviser)
-                .Select(x => x.Organization)
-                .Distinct()
-                .ToList();
+            : GetOfficerOrganizations(user);
     }
 
     public List<Organization> GetOfficerOrganizations(User officer)

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BudgetRequests.Models;
 using BudgetRequests.Models.BudgetRequests;
+using BudgetRequests.Models.Organizations;
 
 namespace BudgetRequests.Pages.Requests
 {
@@ -23,22 +24,31 @@ namespace BudgetRequests.Pages.Requests
         public IList<BudgetRequest> BudgetRequests { get; set; } = default!;
         public List<bool> IsApproved { get; set; } = new();
 
-        public User User { get; set; } = default;
+        public new User User { get; set; }
 
-        public async Task OnGetAsync()
+        public bool CanCreateRequests { get; set; }
+        
+        public bool AreCollegeAdminsSet { get; set; }
+
+        public IActionResult OnGet()
         {
             var user = HttpContext.Session.GetLoggedInUser(_context);
             if (user == null)
             {
-                return;
+                return RedirectToPage("../Login/Index");
             }
 
             User = user;
             BudgetRequests = _context.GetBudgetRequests(user);
+            CanCreateRequests = _context.CanCreateRequests(user);
+            AreCollegeAdminsSet = _context.AreCollegeAdminsSet();
+                        
             foreach (var budgetRequest in BudgetRequests)
             {
                 IsApproved.Add(_context.IsApproved(budgetRequest));
             }
+
+            return Page();
         }
 
         public string GetFormattedTotalExpenses(BudgetRequest budgetRequest)

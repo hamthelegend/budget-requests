@@ -34,7 +34,7 @@ namespace BudgetRequests.Pages.Profile
             var user = HttpContext.Session.GetLoggedInUser(_context);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToPage("../Login/Index");
             }
             User = user;
             Username = user.Username;
