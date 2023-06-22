@@ -34,6 +34,10 @@
 <div class="create-container">
     <div class="box form-box">
         <header>Create Budget Request</header>
+        @if (Model.GlobalError != null)
+        {
+            <span class="error-text mb-4">@Model.GlobalError</span>
+        }
         <form action="" method="post">
             <div class="field input">
                 <label asp-for="Title" class="control-label"></label>
@@ -58,30 +62,34 @@
                 </div>
             </div>
 
-            @foreach (var temporaryExpense in Model.TemporaryExpenses)
-            {
-                
             <div class="row">
                 <div class="field input col">
                     <label asp-for="Purpose" class="control-label"></label>
-                    <input value="@temporaryExpense.Purpose" class="form-control mt-2" readonly/>
                 </div>
                 <div class="field input col">
                     <label asp-for="Amount" class="control-label"></label>
-                    <input value="@temporaryExpense.Amount" class="form-control mt-2 mb-1" readonly/>
                 </div>
             </div>
+            
+            @foreach (var temporaryExpense in Model.TemporaryExpenses)
+            {
+                <div class="row">
+                    <div class="field input col">
+                        <input value="@temporaryExpense.Purpose" class="form-control mb-1" readonly/>
+                    </div>
+                    <div class="field input col">
+                        <input value="@temporaryExpense.Amount" class="form-control mb-1" readonly/>
+                    </div>
+                </div>
             }
             
             <div class="row">
                 <div class="field input col">
-                    <label asp-for="Purpose" class="control-label"></label>
-                    <input asp-for="Purpose" class="form-control mt-2"/>
+                    <input asp-for="Purpose" class="form-control"/>
                     <span class="error-text">@Model.PurposeError</span>
                 </div>
                 <div class="field input col">
-                    <label asp-for="Amount" class="control-label"></label>
-                    <input asp-for="Amount" class="form-control mt-2" type="number" step=".01"/>
+                    <input asp-for="Amount" class="form-control" type="number" step=".01"/>
                     <span class="error-text">@Model.AmountError</span>
                 </div>
             </div>
@@ -92,7 +100,7 @@
                 <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Submit" asp-route-creationId="@Model.CreationId" value="Submit Request" required>
             </div>
             <div class="field">
-                <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Cancel" asp-route-creationId="@Model.CreationId" value="Cancel" required>
+                <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Cancel" value="Cancel" required>
             </div>
         </form>
     </div>

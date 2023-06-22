@@ -20,6 +20,16 @@ public record Signatories(
         return SigningStage.Organization;
     }
 
+    public List<Signatory> SignatoriesWhoCanSign()
+    {
+        return GetSigningStage() switch
+        {
+            SigningStage.Organization => new List<Signatory> { Treasurer, Auditor, President, Adviser },
+            SigningStage.Deans => new List<Signatory> { Treasurer, Auditor, President, Adviser, AssistantDean, Dean },
+            SigningStage.StudentAffairsDirector => ToList()
+        };
+    }
+
     public List<Signatory> ToList()
     {
         return new()

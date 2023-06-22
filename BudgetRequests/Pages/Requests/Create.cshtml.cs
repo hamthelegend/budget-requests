@@ -167,6 +167,12 @@ namespace BudgetRequests.Pages.Requests
                 hasError = true;
             }
 
+            if (TemporaryExpenses.IsNullOrEmpty())
+            {
+                GlobalError = "You need to have at least 1 expense";
+                hasError = true;
+            }
+
             if (hasError)
             {
                 return Page();

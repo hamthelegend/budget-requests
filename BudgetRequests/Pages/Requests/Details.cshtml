@@ -1,5 +1,6 @@
 @page
 @using BudgetRequests.Models.BudgetRequests
+@using BudgetRequests.Data
 @model BudgetRequests.Pages.Requests.DetailsModel
 
 @{
@@ -91,74 +92,106 @@
             <div class="recent-grid">
                 <div class="body">
                     <div class="inputBox">
-                        <span>Description</span>
+                        <h5>Description</h5>
                         <textarea readonly>@Model.BudgetRequest.Body</textarea>
                     </div>
+                            <div class="row">
+                                <div class="field input col">
+                                    <label class="control-label">Purpose</label>
+                                </div>
+                                <div class="field input col">
+                                    <label class="control-label">Amount</label>
+                                </div>
+                            </div>
+                            
+                            @foreach (var expense in Model.Expenses)
+                            {
+                                <div class="row mt-3">
+                                    <div class="field input col">
+                                        <input value="@expense.Purpose" class="form-control" readonly/>
+                                    </div>
+                                    <div class="field input col">
+                                        <input value="@expense.Amount" class="form-control" readonly/>
+                                    </div>
+                                </div>
+                            }
                 </div>
 
                 <div class="signatories">
-                    <div class="signatoryCard">
-                        <div class="cardHeader">
-                            <h3>Signatories</h3>
-                        </div>
+                    <h5>Signatories</h5>
 
-                        <div class="card-body">
-
-                            @foreach (var signatory in Model.Signatories.ToList())
-                            {
-                                <div class="signatory">
-                                    <h4>@signatory.User.FullName</h4>
+                    @foreach (var signatory in Model.Signatories.ToList())
+                    {
+                        <div class="row align-items-center signatory">
+                            <div class="col-md-auto">
+                                <div class="row">
                                     @if (signatory is AdminSignatory adminSignatory)
                                     {
-                                        <small>@adminSignatory.Role.Position</small>
+                                        <small>@adminSignatory.Role.Position.GetText()</small>
                                     }
                                     @if (signatory is OfficerSignatory officerSignatory)
                                     {
-                                        <small>@officerSignatory.Role.Position</small>
-                                    }
-
-                                    @if (signatory.User == Model.User)
-                                    {
-                                        <div class="field">
-                                            @if (signatory.HasSigned)
-                                            {
-                                                <input type="submit" class="btn1" asp-page-handler="Unsign"
-                                                       asp-route-budgetRequestId="@Model.BudgetRequest.Id"
-                                                       asp-route-signatoryId="@signatory.Id"
-                                                       asp-route-isAdmin="@(signatory is AdminSignatory)"
-                                                       value="Unsign" required>
-                                            }
-                                            else
-                                            {
-                                                <input type="submit" class="btn1" asp-page-handler="Sign"
-                                                       asp-route-budgetRequestId="@Model.BudgetRequest.Id"
-                                                       asp-route-signatoryId="@signatory.Id"
-                                                       asp-route-isAdmin="@(signatory is AdminSignatory)"
-                                                       value="Sign" required>
-                                            }
-                                        </div>
+                                        <small>@officerSignatory.Role.Position.GetText()</small>
                                     }
                                 </div>
-                            }
+                                <div class="row">
+                                    <span class="name">@signatory.User.FullName</span>
+                                </div>
+                            </div>
+                            <div class="col"></div>
 
+                            <div class="col-md-auto">
+                                @if (Model.Signatories.SignatoriesWhoCanSign().Contains(signatory))
+                                {
+                                    @if (signatory.User == Model.User)
+                                    {
+                                        @if (signatory.HasSigned)
+                                        {
+                                            <input type="submit" class="btn1" asp-page-handler="Unsign"
+                                                   asp-route-budgetRequestId="@Model.BudgetRequest.Id"
+                                                   asp-route-signatoryId="@signatory.Id"
+                                                   asp-route-isAdmin="@(signatory is AdminSignatory)"
+                                                   value="Unsign" required style="margin-top: 0">
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn1" asp-page-handler="Sign"
+                                                   asp-route-budgetRequestId="@Model.BudgetRequest.Id"
+                                                   asp-route-signatoryId="@signatory.Id"
+                                                   asp-route-isAdmin="@(signatory is AdminSignatory)"
+                                                   value="Sign" required style="margin-top: 0">
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text>@(signatory.HasSigned ? "Signed" : "Not Signed")</text>
+                                    }
+                                }
+                                else
+                                {
+                                    <text>Pending</text>
+                                }
+                            </div>
                         </div>
+                    }
 
-                    </div>
                 </div>
+            </div>
+            <div class="edit-request-cardBox">
 
-                <div class="edit-request-cardBox">
-
-                    <div class="cardTitle">Requesting Organization</div>
-                    <div class="card">
-                        <div>
-                            <div class="cardBody">@Model.BudgetRequest.Requester.Name</div>
-                        </div>
+                <div class="cardTitle">Requesting Organization</div>
+                <div class="card">
+                    <div>
+                        <div class="cardBody">@Model.BudgetRequest.Requester.Name</div>
                     </div>
                 </div>
             </div>
+            <div class="field">
+                <input type="submit" style="width: 100%;" class="btn btn-primary" name="submit" asp-page-handler="Edit" asp-route-id="@Model.BudgetRequest.Id" value="Edit Request" required>
+            </div>
+            <div class="field">
+                <input type="submit" style="width: 100%;" class="btn btn-primary" name="submit" asp-page-handler="Back" value="Back" required>
+            </div>
         </form>
-        <div class="field">
-            <a class="button btn btn-primary" asp-page="./Edit" asp-route-id="@Model.BudgetRequest.Id">Edit Request</a>
-        </div>
     </div>
 </div>

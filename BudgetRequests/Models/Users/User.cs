@@ -13,5 +13,23 @@ public class User
     public string? SignatureFilename { get; set; }
     public bool IsActive { get; set; } = true;
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName
+    {
+        get
+        {
+            var fullName = FirstName;
+            
+            if (MiddleName != null)
+            {
+                fullName += " ";
+                fullName = MiddleName
+                    .Split(' ')
+                    .Aggregate(fullName, (current, middleNamePart) => current + $"{middleNamePart.First()}.");
+            }
+
+            fullName += LastName;
+            
+            return fullName;
+        }
+    }
 }

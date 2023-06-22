@@ -14,4 +14,6 @@ public class BudgetRequest
     public DateTime DateRequested { get; set; }
     [DataType(DataType.Date)]
     public DateTime DateNeeded { get; set; }
+
+    public bool IsActive { get; set; } = false;
 }

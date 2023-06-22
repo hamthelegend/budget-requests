@@ -24,6 +24,8 @@ namespace BudgetRequests.Pages.Requests
 
         public BudgetRequest BudgetRequest { get; set; } = default!;
 
+        public List<Expense> Expenses { get; set; } = new();
+
         public Signatories Signatories { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -38,6 +40,7 @@ namespace BudgetRequests.Pages.Requests
 
             User = user;
             BudgetRequest = budgetRequest;
+            Expenses = _context.GetExpenses(budgetRequest);
             Signatories = _context.GetSignatories(budgetRequest);
 
             return Page();
@@ -83,9 +86,14 @@ namespace BudgetRequests.Pages.Requests
             return Page();
         }
 
-        // public void OnPostApprove(int? signatoryIndex)
-        // {
-        //     
-        // }
+        public IActionResult OnPostEdit(int id)
+        {
+            return RedirectToPage("./Edit", new { id });
+        }
+
+        public IActionResult OnPostBack()
+        {
+            return RedirectToPage("./Index");
+        }
     }
 }
