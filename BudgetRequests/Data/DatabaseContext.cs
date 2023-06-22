@@ -23,6 +23,7 @@ public class DatabaseContext : DbContext
 
     private DbSet<BudgetRequest> BudgetRequests { get; set; }
     private DbSet<Expense> Expenses { get; set; }
+    private DbSet<TemporaryExpense> TemporaryExpenses { get; set; }
     private DbSet<AdminSignatory> AdminSignatories { get; set; }
     private DbSet<OfficerSignatory> OfficerSignatories { get; set; }
 
@@ -497,5 +498,26 @@ public class DatabaseContext : DbContext
         Preferences.Add(preference);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
+    }
+
+    private void CullOldTemporaryExpenses(int currentCreationId, User author)
+    {
+        var toRemove = TemporaryExpenses
+            .Where(temporaryExpense => temporaryExpense.CreationId != currentCreationId 
+                                       && temporaryExpense.Author == author);
+        TemporaryExpenses.RemoveRange(toRemove);
+        SaveChanges();
+    }
+
+    public void AddTemporaryExpense(TemporaryExpense temporaryExpense)
+    {
+        TemporaryExpenses.Add(temporaryExpense);
+        SaveChanges();
+    }
+
+    public List<TemporaryExpense> GetTemporaryExpenses(int currentCreationId, User author)
+    {
+        CullOldTemporaryExpenses(currentCreationId, author);
+        return TemporaryExpenses.Where(temporaryExpense => temporaryExpense.CreationId == currentCreationId).ToList();
     }
 }

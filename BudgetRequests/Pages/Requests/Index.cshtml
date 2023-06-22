@@ -76,7 +76,7 @@
             {
                 if (Model.AreCollegeAdminsSet)
                 {
-                    <a asp-page="Create" type="button" class="unstyled-a create-btn">
+                    <a asp-page="Create" asp-route-creationId="@(new Random().Next())" type="button" class="unstyled-a create-btn">
                         Create Request
                     </a>
                 }

@@ -42,43 +42,70 @@
             </div>
             <div class="field input">
                 <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control mt-2"/>
+                <textarea asp-for="Body" type="" class="form-control mt-2"></textarea>
                 <span class="error-text">@Model.BodyError</span>
             </div>
-            <div class="field input">
-                <label class="control-label">Requester</label>
-                <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-2"></select>
-                <span class="error-text">@Model.OrganizationError</span>
+            <div class="row">
+                <div class="field input col">
+                    <label class="control-label">Requester</label>
+                    <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-2"></select>
+                    <span class="error-text">@Model.OrganizationError</span>
+                </div>
+                <div class="field input col">
+                    <label asp-for="DateNeeded" class="control-label"></label>
+                    <input asp-for="DateNeeded" class="form-control mt-2"/>
+                    <span class="error-text">@Model.DateNeededError</span>
+                </div>
             </div>
-            <div class="field input">
-                <label asp-for="DateNeeded" class="control-label"></label>
-                <input asp-for="DateNeeded" class="form-control mt-2"/>
-                <span class="error-text">@Model.DateNeededError</span>
+
+            @foreach (var temporaryExpense in Model.TemporaryExpenses)
+            {
+                
+            <div class="row">
+                <div class="field input col">
+                    <label asp-for="Purpose" class="control-label"></label>
+                    <input value="@temporaryExpense.Purpose" class="form-control mt-2" readonly/>
+                </div>
+                <div class="field input col">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input value="@temporaryExpense.Amount" class="form-control mt-2 mb-1" readonly/>
+                </div>
             </div>
-
-            @* <div class="field input"> *@
-            @*     <label for="expense">Expense</label> *@
-            @*     <input type="text" name="expense" id="expense" autocomplete="off" required> *@
-            @* </div> *@
-            @* *@
-            @* <div class="field input"> *@
-            @*     <label for="amount">Amount</label> *@
-            @*     <input type="number" name="amount" id="amount" autocomplete="off" placeholder="&#8369;" required> *@
-            @* </div> *@
-
-            <script>
-            function show(a){
-              document.querySelector('.text02').value = a;
             }
-
-            let dropdown = document.querySelector('.dropdown');
-            dropdown.onclick = function(){
-              dropdown.classList.toggle('active');
-            }
-          </script>
+            
+            <div class="row">
+                <div class="field input col">
+                    <label asp-for="Purpose" class="control-label"></label>
+                    <input asp-for="Purpose" class="form-control mt-2"/>
+                    <span class="error-text">@Model.PurposeError</span>
+                </div>
+                <div class="field input col">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input asp-for="Amount" class="form-control mt-2" type="number" step=".01"/>
+                    <span class="error-text">@Model.AmountError</span>
+                </div>
+            </div>
             <div class="field">
-                <input type="submit" class="btn" name="submit" value="Submit Request" required>
+                <input type="submit" class="btn btn-secondary mt-2" name="submit" value="Add Expense" asp-page-handler="AddExpense" asp-route-creationId="@Model.CreationId" required>
+            </div>
+            <div class="field">
+                <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Submit" asp-route-creationId="@Model.CreationId" value="Submit Request" required>
+            </div>
+            <div class="field">
+                <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Cancel" asp-route-creationId="@Model.CreationId" value="Cancel" required>
             </div>
         </form>
     </div>
 </div>
+
+
+<script>
+    function show(a){
+      document.querySelector('.text02').value = a;
+    }
+
+    let dropdown = document.querySelector('.dropdown');
+    dropdown.onclick = function(){
+      dropdown.classList.toggle('active');
+    }
+</script>

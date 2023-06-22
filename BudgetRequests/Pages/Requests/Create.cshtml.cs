@@ -23,6 +23,10 @@ namespace BudgetRequests.Pages.Requests
         {
             _context = context;
         }
+        
+        public int CreationId { get; set; }
+        
+        public new User User { get; set; }
 
         public IEnumerable<SelectListItem> Organizations { get; set; } = default!;
         
@@ -41,11 +45,18 @@ namespace BudgetRequests.Pages.Requests
         [DisplayName("Date needed")]
         [BindProperty]
         public DateTime? DateNeeded { get; set; }
-
         public string? DateNeededError { get; set; }
+        
+        [BindProperty] public string? Purpose { get; set; }
+        public string? PurposeError { get; set; }
+        [BindProperty] public decimal? Amount { get; set; }
+        public string? AmountError { get; set; }
+        
+        public List<TemporaryExpense> TemporaryExpenses { get; set; }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int creationId)
         {
+            CreationId = creationId;
             var user = HttpContext.Session.GetLoggedInUser(_context);
 
             if (user == null)
@@ -60,19 +71,64 @@ namespace BudgetRequests.Pages.Requests
                 return RedirectToPage("./Index");
             }
 
+            User = user;
+            TemporaryExpenses = _context.GetTemporaryExpenses(creationId, user);
+
             Organizations = _context.GetOfficerOrganizations(user).Select(organization =>
                 new SelectListItem
                 {
                     Value = organization.Id.ToString(),
                     Text = organization.Name
                 });
+            
+            return Page();
+        }
+
+        public IActionResult OnPostAddExpense(int creationId)
+        {
+            OnGet(creationId);
+
+            var hasError = false;
+
+            if (Purpose.IsNullOrEmpty())
+            {
+                PurposeError = "Expense name is required";
+                hasError = true;
+            }
+
+            if (Amount == null)
+            {
+                AmountError = "Amount is required";
+                hasError = true;
+            }
+
+            if (hasError)
+            {
+                return Page();
+            }
+            
+            _context.AddTemporaryExpense(new TemporaryExpense
+            {
+                Purpose = Purpose!,
+                Amount = (int) Amount!,
+                Author = User,
+                CreationId = creationId
+            });
+
+            TemporaryExpenses = _context.GetTemporaryExpenses(creationId, User);
+
+            Purpose = null;
+            Amount = null;
+            
+            ModelState.Clear();
+
             return Page();
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public IActionResult OnPost()
+        public IActionResult OnPostSubmit(int creationId)
         {
-            OnGet();
+            OnGet(creationId);
             
             var hasError = false;
             
@@ -116,14 +172,29 @@ namespace BudgetRequests.Pages.Requests
                 return Page();
             }
 
-            _context.AddBudgetRequest(new BudgetRequest
+            var budgetRequest = new BudgetRequest
             {
                 Title = Title!,
                 Body = Body!,
                 Requester = _context.GetOrganization(Convert.ToInt32(OrganizationId))!,
+                DateRequested = DateTime.Now.Date,
                 DateNeeded = (DateTime) DateNeeded!
-            }, new List<Expense>());
+            };
 
+            var expenses = TemporaryExpenses.Select(temporaryExpense => new Expense()
+            {
+                BudgetRequest = budgetRequest,
+                Purpose = temporaryExpense.Purpose,
+                Amount = temporaryExpense.Amount
+            }).ToList();
+            
+            _context.AddBudgetRequest(budgetRequest, expenses);
+
+            return RedirectToPage("./Index");
+        }
+
+        public IActionResult OnPostCancel()
+        {
             return RedirectToPage("./Index");
         }
     }
