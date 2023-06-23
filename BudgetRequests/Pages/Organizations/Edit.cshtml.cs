@@ -9,69 +9,102 @@ using Microsoft.EntityFrameworkCore;
 using BudgetRequests.Models;
 using BudgetRequests.Models.Organizations;
 
-namespace BudgetRequests.Pages.Organizations
-{
-    public class EditModel : PageModel
-    {
-        private readonly BudgetRequests.Models.DatabaseContext _context;
+namespace BudgetRequests.Pages.Organizations;
 
-        public EditModel(BudgetRequests.Models.DatabaseContext context)
+public class EditModel : PageModel
+{
+    private readonly BudgetRequests.Models.DatabaseContext _context;
+
+    public EditModel(BudgetRequests.Models.DatabaseContext context)
+    {
+        _context = context;
+    }
+
+    public IEnumerable<SelectListItem> Admins { get; set; } = default!;
+    public IEnumerable<SelectListItem> Officers { get; set; } = default!;
+
+    [BindProperty] public Organization Organization { get; set; } = default!;
+
+    [BindProperty] public string AdviserId { get; set; }
+    [BindProperty] public string PresidentId { get; set; }
+    [BindProperty] public string VicePresidentId { get; set; }
+    [BindProperty] public string SecretaryId { get; set; }
+    [BindProperty] public string TreasurerId { get; set; }
+    [BindProperty] public string AuditorId { get; set; }
+    [BindProperty] public string PublicRelationsOfficerId { get; set; }
+
+    public IActionResult OnGet(int? id)
+    {
+        var organization = _context.GetOrganization(id ?? -1);
+
+        if (organization == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Organization Organization { get; set; } = default!;
+        Organization = organization;
+        
+        Admins = _context.GetAdmins().Select(admin =>
+            new SelectListItem
+            {
+                Value = admin.Id.ToString(),
+                Text = $"{admin.FirstName} {admin.LastName}"
+            });
+        Officers = _context.GetOfficers().Select(officer =>
+            new SelectListItem
+            {
+                Value = officer.Id.ToString(),
+                Text = $"{officer.FirstName} {officer.LastName}"
+            });
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        var organizationOfficers = _context.GetOrganizationOfficers(organization);
+
+        PresidentId = organizationOfficers.President.Id.ToString();
+        VicePresidentId = organizationOfficers.VicePresident.Id.ToString();
+        SecretaryId = organizationOfficers.Secretary.Id.ToString();
+        TreasurerId = organizationOfficers.Treasurer.Id.ToString();
+        AuditorId = organizationOfficers.Auditor.Id.ToString();
+        PublicRelationsOfficerId = organizationOfficers.PublicRelationsOfficer.Id.ToString();
+        
+        AdviserId = Organization.Adviser!.Id.ToString();
+
+        ModelState.Clear();
+        
+        return Page();
+    }
+
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            if (id == null || _context.GetOrganizations() == null)
-            {
-                return NotFound();
-            }
-
-            var organization =  _context.GetOrganization((int)id);
-            if (organization == null)
-            {
-                return NotFound();
-            }
-            Organization = organization;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+        Organization.Adviser = _context.GetUser(Convert.ToInt32(AdviserId));
+            
+        _context.AddOrganization(Organization);
+        await _context.SaveChangesAsync();
 
-            _context.Attach(Organization).State = EntityState.Modified;
+        var president = _context.GetOfficer(Convert.ToInt32(PresidentId));
+        var vicePresident = _context.GetOfficer(Convert.ToInt32(VicePresidentId));
+        var secretary = _context.GetOfficer(Convert.ToInt32(SecretaryId));
+        var treasurer = _context.GetOfficer(Convert.ToInt32(TreasurerId));
+        var auditor = _context.GetOfficer(Convert.ToInt32(AuditorId));
+        var publicRelationsOfficer = _context.GetOfficer(Convert.ToInt32(PublicRelationsOfficerId));
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrganizationExists(Organization.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        var organizationOfficers = new OrganizationOfficers(
+            Organization, 
+            president, 
+            vicePresident, 
+            secretary,
+            treasurer, 
+            auditor, 
+            publicRelationsOfficer);
 
-            return RedirectToPage("./Index");
-        }
+        _context.SetOrganizationOfficers(organizationOfficers);
 
-        private bool OrganizationExists(int id)
-        {
-          return _context.GetOrganization(id) != null;
-        }
+        return RedirectToPage("./Index");
     }
 }

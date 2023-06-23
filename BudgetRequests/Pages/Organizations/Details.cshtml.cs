@@ -19,24 +19,22 @@ namespace BudgetRequests.Pages.Organizations
             _context = context;
         }
 
-      public Organization Organization { get; set; } = default!; 
+      public Organization Organization { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+      public OrganizationOfficers OfficerRoles { get; set; }
+
+        public IActionResult OnGet(int? id)
         {
-            if (id == null || _context.GetOrganizations() == null)
-            {
-                return NotFound();
-            }
-
-            var organization = _context.GetOrganization((int)id);
+            var organization = _context.GetOrganization(id ?? -1);
+            
             if (organization == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                Organization = organization;
-            }
+
+            Organization = organization;
+            OfficerRoles = _context.GetOrganizationOfficers(organization);
+            
             return Page();
         }
     }

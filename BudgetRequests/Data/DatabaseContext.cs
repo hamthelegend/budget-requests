@@ -51,6 +51,17 @@ public class DatabaseContext : DbContext
         var organizations = GetOfficerOrganizations(user);
         return user.Type == UserType.Officer && organizations.Count > 0;
     }
+    
+    public bool CanUserDeleteBudgetRequest(User user, BudgetRequest budgetRequest)
+    {
+        var users = OfficerRoles
+            .Where(officerRole => officerRole.Organization == budgetRequest.Requester)
+            .Include(officerRole => officerRole.Officer)
+            .Select(officerRole => officerRole.Officer)
+            .ToList();
+        users.Add(budgetRequest.Requester.Adviser!);
+        return users.Contains(user);
+    }
 
     public bool AreCollegeAdminsSet()
     {
@@ -210,18 +221,57 @@ public class DatabaseContext : DbContext
         return OfficerRoles.FirstOrDefault(x => x.Id == id);
     }
 
-    public bool AddOfficerRole(OfficerRole officerRole)
+    /*public bool AddOfficerRole(OfficerRole officerRole)
     {
         OfficerRoles.Add(officerRole);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
-    }
+    }*/
 
-    public bool RemoveOfficerRole(OfficerRole officerRole)
+    /*public bool RemoveOfficerRole(OfficerRole officerRole)
     {
         OfficerRoles.Remove(officerRole);
         var changesSaved = SaveChanges();
         return changesSaved > 0;
+    }*/
+
+    public OrganizationOfficers GetOrganizationOfficers(Organization organization)
+    {
+        var officerRoles = OfficerRoles
+            .Where(officerRole => officerRole.Organization == organization)
+            .Include(officerRole => officerRole.Officer)
+            .OrderBy(officerRole => officerRole.Id);
+        
+        var president =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.President);
+        var vicePresident =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.VicePresident);
+        var secretary =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.Secretary);
+        var treasurer =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.Treasurer);
+        var auditor =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.Auditor);
+        var publicRelationsOfficer =
+            officerRoles.LastOrDefault(officerRole => officerRole.Position == OrganizationPosition.PublicRelationsOfficer);
+
+        return new OrganizationOfficers(
+            president, 
+            vicePresident, 
+            secretary, 
+            treasurer, 
+            auditor,
+            publicRelationsOfficer);
+    }
+
+    public void SetOrganizationOfficers(OrganizationOfficers organizationOfficers)
+    {
+        foreach (var organizationOfficer in organizationOfficers.ToList())
+        {
+            OfficerRoles.Add(organizationOfficer);
+        }
+
+        SaveChanges();
     }
 
     public List<Organization> GetOrganizations()
@@ -351,7 +401,6 @@ public class DatabaseContext : DbContext
     public bool RemoveBudgetRequest(BudgetRequest budgetRequest)
     {
         BudgetRequests.Remove(budgetRequest);
-        // TODO: Check deletion behavior of expenses and signatories
         var changesSaved = SaveChanges();
         return changesSaved > 0;
     }
@@ -515,9 +564,19 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
+    public TemporaryExpense? GetTemporaryExpense(int id)
+    {
+        return TemporaryExpenses.FirstOrDefault(temporaryExpense => temporaryExpense.Id == id);
+    }
+
     public List<TemporaryExpense> GetTemporaryExpenses(int currentCreationId, User author)
     {
         CullOldTemporaryExpenses(currentCreationId, author);
         return TemporaryExpenses.Where(temporaryExpense => temporaryExpense.CreationId == currentCreationId).ToList();
+    }
+
+    public void RemoveTemporaryExpense(TemporaryExpense temporaryExpense)
+    {
+        TemporaryExpenses.Remove(temporaryExpense);
     }
 }

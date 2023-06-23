@@ -124,6 +124,20 @@ namespace BudgetRequests.Pages.Requests
 
             return Page();
         }
+        
+        public IActionResult OnPostRemoveExpense(int id, int creationId)
+        {
+            var temporaryExpense = _context.GetTemporaryExpense(id);
+            
+            if (temporaryExpense != null)
+            {
+                _context.RemoveTemporaryExpense(temporaryExpense);
+            }
+
+            OnGet(creationId);  
+
+            return Page();
+        }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public IActionResult OnPostSubmit(int creationId)

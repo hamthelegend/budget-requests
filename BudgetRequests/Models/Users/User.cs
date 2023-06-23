@@ -27,7 +27,7 @@ public class User
                     .Aggregate(fullName, (current, middleNamePart) => current + $"{middleNamePart.First()}.");
             }
 
-            fullName += LastName;
+            fullName += $" {LastName}";
             
             return fullName;
         }

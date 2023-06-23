@@ -1,35 +1,10 @@
 @page
+@using Microsoft.IdentityModel.Tokens
 @model BudgetRequests.Pages.Requests.CreateModel
 
 @{
     ViewData["Title"] = "Create";
 }
-
-@* <div class="row"> *@
-@*     <div class="col-md-4"> *@
-@*         <form method="post"> *@
-@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="Title" class="control-label"></label> *@
-@*                 <input asp-for="Title" class="form-control mt-2"/> *@
-@*                 <span asp-validation-for="Title" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="Body" class="control-label"></label> *@
-@*                 <input asp-for="Body" class="form-control mt-2"/> *@
-@*                 <span asp-validation-for="Body" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group mt-2"> *@
-@*                 <label class="control-label">Requester</label> *@
-@*                 <select asp-for="OrganizationId" asp-items="Model.Organizations" class="form-control mt-2 mt-1"></select> *@
-@*                 <span asp-validation-for="OrganizationId" class="text-danger mt-1"></span> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <input type="submit" value="Create" class="btn btn-primary"/> *@
-@*             </div> *@
-@*         </form> *@
-@*     </div> *@
-@* </div> *@
 
 <div class="create-container">
     <div class="box form-box">
@@ -69,8 +44,14 @@
                 <div class="field input col">
                     <label asp-for="Amount" class="control-label"></label>
                 </div>
+                @if (!Model.TemporaryExpenses.IsNullOrEmpty())
+                {
+                    <div class="col-md-auto">
+                        <input type="submit" class="btn1" value="🗙" required style="margin-top: 0; visibility: hidden">
+                    </div>
+                }
             </div>
-            
+
             @foreach (var temporaryExpense in Model.TemporaryExpenses)
             {
                 <div class="row">
@@ -80,9 +61,15 @@
                     <div class="field input col">
                         <input value="@temporaryExpense.Amount" class="form-control mb-1" readonly/>
                     </div>
+                    @if (!Model.TemporaryExpenses.IsNullOrEmpty())
+                    {
+                        <div class="col-md-auto">
+                            <input type="submit" class="btn1" value="🗙" asp-page-handler="RemoveExpense" asp-route-id="@temporaryExpense.Id" asp-route-creationId="@Model.CreationId" required style="margin-top: 0">
+                        </div>
+                    }
                 </div>
             }
-            
+
             <div class="row">
                 <div class="field input col">
                     <input asp-for="Purpose" class="form-control"/>
@@ -92,6 +79,12 @@
                     <input asp-for="Amount" class="form-control" type="number" step=".01"/>
                     <span class="error-text">@Model.AmountError</span>
                 </div>
+                @if (!Model.TemporaryExpenses.IsNullOrEmpty())
+                {
+                    <div class="col-md-auto">
+                        <input type="submit" class="btn1" value="🗙" required style="margin-top: 0; visibility: hidden">
+                    </div>
+                }
             </div>
             <div class="field">
                 <input type="submit" class="btn btn-secondary mt-2" name="submit" value="Add Expense" asp-page-handler="AddExpense" asp-route-creationId="@Model.CreationId" required>

@@ -13,22 +13,24 @@ namespace BudgetRequests.Pages.Requests
 {
     public class DetailsModel : PageModel
     {
-        private readonly BudgetRequests.Models.DatabaseContext _context;
+        private readonly DatabaseContext _context;
 
-        public DetailsModel(BudgetRequests.Models.DatabaseContext context)
+        public DetailsModel(DatabaseContext context)
         {
             _context = context;
         }
 
-        public User User { get; set; } = default!;
+        public new User User { get; set; } = default!;
 
         public BudgetRequest BudgetRequest { get; set; } = default!;
 
         public List<Expense> Expenses { get; set; } = new();
 
         public Signatories Signatories { get; set; } = default!;
+        
+        public bool CanUserDeleteBudgetRequest { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             var user = HttpContext.Session.GetLoggedInUser(_context);
             var budgetRequest = _context.GetBudgetRequest(id ?? -1);
@@ -42,53 +44,51 @@ namespace BudgetRequests.Pages.Requests
             BudgetRequest = budgetRequest;
             Expenses = _context.GetExpenses(budgetRequest);
             Signatories = _context.GetSignatories(budgetRequest);
+            CanUserDeleteBudgetRequest = _context.CanUserDeleteBudgetRequest(user, budgetRequest);
 
             return Page();
         }
 
         public IActionResult OnPostSign(int? budgetRequestId, int? signatoryId, bool isAdmin)
         {
-            var user = HttpContext.Session.GetLoggedInUser(_context);
-            var budgetRequest = _context.GetBudgetRequest(budgetRequestId ?? -1);
+            OnGet(budgetRequestId);
+            
             var signatory = _context.GetSignatory(signatoryId ?? -1, isAdmin);
 
-            if (user == null || budgetRequest == null || signatory == null)
+            if (signatory != null)
             {
-                return NotFound();
+                signatory.HasSigned = true;
             }
-
-            User = user;
-            BudgetRequest = budgetRequest;
-            Signatories = _context.GetSignatories(budgetRequest);
             
-            signatory.HasSigned = true;
             _context.SaveChanges();
             return Page();
         }
 
         public IActionResult OnPostUnsign(int? budgetRequestId, int? signatoryId, bool isAdmin)
         {
-            var user = HttpContext.Session.GetLoggedInUser(_context);
-            var budgetRequest = _context.GetBudgetRequest(budgetRequestId ?? -1);
+            OnGet(budgetRequestId);
+            
             var signatory = _context.GetSignatory(signatoryId ?? -1, isAdmin);
 
-            if (user == null || budgetRequest == null || signatory == null)
+            if (signatory != null)
             {
-                return NotFound();
+                signatory.HasSigned = false;
             }
-
-            User = user;
-            BudgetRequest = budgetRequest;
-            Signatories = _context.GetSignatories(budgetRequest);
             
-            signatory.HasSigned = false;
             _context.SaveChanges();
             return Page();
         }
 
-        public IActionResult OnPostEdit(int id)
+        public IActionResult OnPostDelete(int id)
         {
-            return RedirectToPage("./Edit", new { id });
+            var budgetRequest = _context.GetBudgetRequest(id);
+            
+            if (budgetRequest != null)
+            {
+                _context.RemoveBudgetRequest(budgetRequest);
+            }
+
+            return RedirectToPage("./Index");
         }
 
         public IActionResult OnPostBack()

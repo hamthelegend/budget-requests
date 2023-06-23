@@ -1,10 +1,12 @@
 @page
+@using BudgetRequests.Data
 @model BudgetRequests.Pages.Organizations.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
+@*
 <h1>Details</h1>
 
 <div>
@@ -35,3 +37,34 @@
     <a asp-page="./Edit" asp-route-id="@Model.Organization?.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+*@
+<div class="create-container">
+    <div class="profile-card">
+    
+        <div class="text-data">
+            <span class="name">@Model.Organization.Name</span>
+        </div>
+    
+        <div class="role">
+            Adviser <span class="name">@Model.Organization.Adviser.FullName</span>
+        </div>
+        
+        @foreach (var officerRole in Model.OfficerRoles.ToList())
+        {
+            <div class="role">
+                @officerRole.Position.GetText() <span class="name">@officerRole.Officer.FullName</span>
+            </div>
+        }
+
+        <div class="field">
+            <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Organization.Id">Edit Organization</a>
+        </div>
+        
+        <div class="field">
+            <a class="btn btn-primary" asp-page="./Index">Go Back</a>
+        </div>
+    
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

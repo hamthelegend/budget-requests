@@ -22,15 +22,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\OfficerRoles\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Delete.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\PrintRequest\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\PrintRequest\_pdfView.cshtml" />
     </ItemGroup>
 
 </Project>
