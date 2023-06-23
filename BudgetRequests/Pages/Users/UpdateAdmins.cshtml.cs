@@ -19,16 +19,25 @@ public class UpdateAdmins : PageModel
     public UpdateAdmins(DatabaseContext context)
     {
         _context = context;
+    }
+    
+    public IActionResult OnGet()
+    {
         Admins = _context.GetAdmins().Select(admin =>
             new SelectListItem
             {
                 Value = admin.Id.ToString(),
                 Text = $"{admin.FirstName} {admin.LastName}"
             });
-    }
-    
-    public IActionResult OnGet()
-    {
+
+        var collegeAdmins = _context.GetCollegeAdmins();
+
+        AssistantDeanId = collegeAdmins.AssistantDean?.Id.ToString() ?? "1";
+        DeanId = collegeAdmins.Dean?.Id.ToString() ?? "1";
+        StudentAffairsDirectorId = collegeAdmins.StudentAffairsDirector?.Id.ToString() ?? "1";
+        
+        ModelState.Clear();
+        
         return Page();
     }
 

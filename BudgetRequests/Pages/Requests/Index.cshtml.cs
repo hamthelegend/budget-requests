@@ -29,6 +29,8 @@ namespace BudgetRequests.Pages.Requests
         public bool CanCreateRequests { get; set; }
         
         public bool AreCollegeAdminsSet { get; set; }
+        
+        public bool IsSuperAdmin { get; set; }
 
         public IActionResult OnGet()
         {
@@ -42,7 +44,8 @@ namespace BudgetRequests.Pages.Requests
             BudgetRequests = _context.GetBudgetRequests(user);
             CanCreateRequests = _context.CanCreateRequests(user);
             AreCollegeAdminsSet = _context.AreCollegeAdminsSet();
-                        
+            IsSuperAdmin = _context.IsSuperAdmin(user);
+
             foreach (var budgetRequest in BudgetRequests)
             {
                 IsApproved.Add(_context.IsApproved(budgetRequest));

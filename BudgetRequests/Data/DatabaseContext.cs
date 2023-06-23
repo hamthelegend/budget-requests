@@ -41,11 +41,6 @@ public class DatabaseContext : DbContext
         optionsBuilder.UseSqlServer(CONNECTION_STRING);
     }
 
-    public bool IsSuperAdmin(User user)
-    {
-        return AdminRoles.Any(adminRole => adminRole.Admin == user);
-    }
-
     public bool CanCreateRequests(User user)
     {
         var organizations = GetOfficerOrganizations(user);
@@ -72,6 +67,11 @@ public class DatabaseContext : DbContext
     public bool IsUsernameAvailable(string username)
     {
         return GetUsers().All(x => x.Username != username);
+    }
+
+    public bool IsSuperAdmin(User user)
+    {
+        return AdminRoles.Any(role => role.Admin == user && role.Position == AdminPosition.SuperAdmin);
     }
 
     public User? GetUser(string username)

@@ -44,48 +44,48 @@
 
 <div class="create-container">
     <div class="box form-box">
-        <header>Add Organization</header>
+        <header>Edit Organization</header>
         <form action="" method="post">
             <div class="field input">
                 <label asp-for="Organization.Name" class="control-label"></label>
                 <input asp-for="Organization.Name" class="form-control"/>
-                <span asp-validation-for="Organization.Name" class="text-danger"></span>
+                <span class="error-text">@Model.NameError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">Adviser</label>
                 <select asp-for="AdviserId" asp-items="Model.Admins" class="form-control mt-1"></select>
-                <span asp-validation-for="AdviserId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.AdviserError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">President</label>
                 <select asp-for="PresidentId" asp-items="Model.Officers" class="form-control mt-1"></select>
-                <span asp-validation-for="PresidentId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.PresidentError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">Vice President</label>
                 <select asp-for="VicePresidentId" asp-items="Model.Officers" class="form-control mt-1"></select>
-                <span asp-validation-for="VicePresidentId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.VicePresidentError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">Secretary</label>
                 <select asp-for="SecretaryId" asp-items="Model.Officers" class="form-control mt-1"></select>
-                <span asp-validation-for="SecretaryId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.SecretaryError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">Treasurer</label>
                 <select asp-for="TreasurerId" asp-items="Model.Officers" class="form-control mt-1"></select>
-                <span asp-validation-for="TreasurerId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.TreasurerError</span>
             </div>
             
             <div class="field input mt-2">
                 <label class="control-label">Auditor</label>
                 <select asp-for="AuditorId" asp-items="Model.Officers" class="form-control mt-1"></select>
-                <span asp-validation-for="AuditorId" class="text-danger mt-1"></span>
+                <span class="error-text">@Model.PublicRelationsOfficerError</span>
             </div>
             
             <div class="field input mt-2">
@@ -93,13 +93,13 @@
                 <select asp-for="PublicRelationsOfficerId" asp-items="Model.Officers" class="form-control mt-1"></select>
                 <span asp-validation-for="PublicRelationsOfficerId" class="text-danger mt-1"></span>
             </div>
-
+            
             <div class="field">
-                <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Organization.Id">Edit Organization</a>
+                <input type="submit" class="btn btn-primary" name="submit" asp-page-handler="Save" asp-route-id="@Model.Organization.Id" value="Submit" required>
             </div>
             
             <div class="field">
-                <a style="margin-top: 0" class="btn btn-secondary" asp-page="./Index">Go Back</a>
+                <input style="margin-top: 0" type="submit" class="btn btn-secondary" name="submit" asp-page-handler="Cancel" asp-route-id="@Model.Organization.Id" value="Cancel" required>
             </div>
         </form>
     </div>

@@ -30,6 +30,7 @@
       <_ContentIncludedByDefault Remove="Pages\AdminRoles\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\PrintRequest\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\PrintRequest\_pdfView.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\HomePage\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

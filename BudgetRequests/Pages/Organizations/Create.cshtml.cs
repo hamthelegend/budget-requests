@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BudgetRequests.Models;
 using BudgetRequests.Models.Organizations;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BudgetRequests.Pages.Organizations;
 
@@ -23,14 +24,29 @@ public class CreateModel : PageModel
     public IEnumerable<SelectListItem> Officers { get; set; } = default!;
 
     [BindProperty] public Organization Organization { get; set; } = default!;
+    public string NameError { get; set; }
 
-    [BindProperty] public string AdviserId { get; set; }
-    [BindProperty] public string PresidentId { get; set; }
-    [BindProperty] public string VicePresidentId { get; set; }
-    [BindProperty] public string SecretaryId { get; set; }
-    [BindProperty] public string TreasurerId { get; set; }
-    [BindProperty] public string AuditorId { get; set; }
-    [BindProperty] public string PublicRelationsOfficerId { get; set; }
+    [BindProperty] public string? AdviserId { get; set; }
+    public string? AdviserError { get; set; }
+    
+    [BindProperty] public string? PresidentId { get; set; }
+    public string? PresidentError { get; set; }
+
+    [BindProperty] public string? VicePresidentId { get; set; }
+    public string? VicePresidentError { get; set; }
+
+    [BindProperty] public string? SecretaryId { get; set; }
+    public string? SecretaryError { get; set; }
+
+    [BindProperty] public string? TreasurerId { get; set; }
+    public string? TreasurerError { get; set; }
+
+    [BindProperty] public string? AuditorId { get; set; }
+    public string? AuditorError { get; set; }
+
+    [BindProperty] public string? PublicRelationsOfficerId { get; set; }
+    public string? PublicRelationsOfficerError { get; set; }
+
 
     public IActionResult OnGet()
     {
@@ -53,12 +69,21 @@ public class CreateModel : PageModel
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public IActionResult OnPostAdd()
     {
-        if (!ModelState.IsValid)
+        var hasError = false;
+
+        if (Organization.Name.IsNullOrEmpty())
         {
-            return Page();
+            NameError = "Name is required";
+            hasError = true;
         }
 
         Organization.Adviser = _context.GetUser(Convert.ToInt32(AdviserId));
+        
+        if (Organization.Adviser == null)
+        {
+            AdviserError = "Adviser is required";
+            hasError = true;
+        }
             
         _context.AddOrganization(Organization);
         _context.SaveChanges();
@@ -69,6 +94,47 @@ public class CreateModel : PageModel
         var treasurer = _context.GetOfficer(Convert.ToInt32(TreasurerId));
         var auditor = _context.GetOfficer(Convert.ToInt32(AuditorId));
         var publicRelationsOfficer = _context.GetOfficer(Convert.ToInt32(PublicRelationsOfficerId));
+        
+        if (president == null)
+        {
+            PresidentError = "President is required";
+            hasError = true;
+        }
+        
+        if (vicePresident == null)
+        {
+            VicePresidentError = "Vice President is required";
+            hasError = true;
+        }
+        
+        if (secretary == null)
+        {
+            SecretaryError = "Secretary is required";
+            hasError = true;
+        }
+        
+        if (treasurer == null)
+        {
+            TreasurerError = "Treasurer is required";
+            hasError = true;
+        }
+        
+        if (auditor == null)
+        {
+            AuditorError = "Auditor is required";
+            hasError = true;
+        }
+        
+        if (publicRelationsOfficer == null)
+        {
+            PublicRelationsOfficerError = "P.R.O. is required";
+            hasError = true;
+        }
+
+        if (hasError)
+        {
+            return Page();
+        }
 
         var organizationOfficers = new OrganizationOfficers(
             Organization, 
