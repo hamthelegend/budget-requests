@@ -1,4 +1,5 @@
 ﻿@page
+@using BudgetRequests.Models
 @model BudgetRequests.Pages.Profile.Index
 
 @{
@@ -8,26 +9,30 @@
 <div class="create-container">
     <div class="profile-card">
         <div class="text-data">
-            <span class="name">Jonathan</span>
-            <span class="username">@@jo_na_than</span>
-            <span class="role">Admin</span>
+            <span class="name">@Model.User.FullName</span>
+            <span class="username">@@@Model.User.Username</span>
+            <span class="role">@(Model.User.Type == UserType.Admin ? "Admin" : "Officer")</span>
         </div>
 
-        <button class="user-btn"><ion-icon name="information-circle-outline"></ion-icon>
+        <a class="user-btn" asp-page="ChangeUsername"><ion-icon name="information-circle-outline"></ion-icon>
             &nbsp; &nbsp; &nbsp; Change username
-        </button>
+        </a>
 
-        <button class="user-btn"><ion-icon name="key-outline"></ion-icon>
+        <a class="user-btn" asp-page="ChangePassword"><ion-icon name="key-outline"></ion-icon>
             &nbsp; &nbsp; &nbsp; Change password
-        </button>
+        </a>
 
-        <button class="user-btn"><ion-icon name="pencil-outline"></ion-icon>
+        <a class="user-btn" asp-page="ChangeSignature"><ion-icon name="pencil-outline"></ion-icon>
             &nbsp; &nbsp; &nbsp; Change signature
-        </button>
+        </a>
+
+        <a class="user-btn" asp-page="../Requests/Index"><ion-icon name="arrow-back-outline"></ion-icon>
+            &nbsp; &nbsp; &nbsp; Go Back
+        </a>
 
     </div>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
 </div>
+
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

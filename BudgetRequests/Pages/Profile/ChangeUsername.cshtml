@@ -1,0 +1,38 @@
+@page
+@using Microsoft.IdentityModel.Tokens
+@model BudgetRequests.Pages.Profile.ChangeUsername
+
+@{
+    ViewData["Title"] = "Change Username";
+}
+
+<div class="create-container">
+    <div class="box form-box">
+        <header>Change Your Username</header>
+        <form action="" method="post">
+            <div class="field input">
+                <label class="control-label">New Username</label>
+                <input asp-for="Username" class="form-control mt-2"/>
+                <span class="error-text">@Model.UsernameError</span>
+            </div>
+            <div class="field">
+                <input type="submit" class="btn btn-primary" name="submit" value="Save" required>
+            </div>
+            <div class="field">
+                <input style="margin-top: 0" type="submit" class="btn btn-primary" name="submit" asp-page-handler="Cancel" value="Cancel" required>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function show(a){
+      document.querySelector('.text02').value = a;
+    }
+
+    let dropdown = document.querySelector('.dropdown');
+    dropdown.onclick = function(){
+      dropdown.classList.toggle('active');
+    }
+</script>

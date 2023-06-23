@@ -31,4 +31,12 @@
       <_ContentIncludedByDefault Remove="Pages\PrintRequest\_pdfView.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Pages\AdminRoles\Create.cshtml" />
+      <UpToDateCheckInput Remove="Pages\AdminRoles\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Pages\AdminRoles\Details.cshtml" />
+      <UpToDateCheckInput Remove="Pages\AdminRoles\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Pages\AdminRoles\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

@@ -69,6 +69,11 @@ public class DatabaseContext : DbContext
         return collegeAdmins.ToList().All(admin => admin != null);
     }
 
+    public bool IsUsernameAvailable(string username)
+    {
+        return GetUsers().All(x => x.Username != username);
+    }
+
     public User? GetUser(string username)
     {
         return Users.FirstOrDefault(user => user.Username == username);
