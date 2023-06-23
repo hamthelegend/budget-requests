@@ -51,7 +51,7 @@ public class CreateModel : PageModel
 
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPostAdd()
     {
         if (!ModelState.IsValid)
         {
@@ -61,7 +61,7 @@ public class CreateModel : PageModel
         Organization.Adviser = _context.GetUser(Convert.ToInt32(AdviserId));
             
         _context.AddOrganization(Organization);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         var president = _context.GetOfficer(Convert.ToInt32(PresidentId));
         var vicePresident = _context.GetOfficer(Convert.ToInt32(VicePresidentId));
@@ -83,4 +83,10 @@ public class CreateModel : PageModel
         
         return RedirectToPage("./Index");
     }
+
+    public IActionResult OnPostCancel()
+    {
+        return RedirectToPage("./Index");
+    }
+    
 }

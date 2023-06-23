@@ -200,15 +200,18 @@ body {
 
 .btn {
     height: 40px;
-    background: #224275;
-    border: 0;
+    /*background: #224275;*/
     border-radius: 5px;
-    color: white;
     font-size: 16px;
     cursor: pointer;
     transition: all .3s;
     margin-top: 10px;
     padding: 0 10px;
+}
+
+.btn-primary {
+    background-color: #0066cc;
+    color: white;
 }
 
 .btn hover {
@@ -455,9 +458,7 @@ body {
 .btn{
     position: relative;
     padding: 5px 10px;
-    background: #0066cc;
     text-decoration: none;
-    color: white;
     border-radius: 6px;
 }
 
@@ -1095,4 +1096,25 @@ body{
 
 .user-btn:hover, .user-btn:active {
     background-color: #b3d4fc;
+}
+
+.toggle-btn{
+    display: inline-block;
+    position: relative;
+    padding: 10px 10px;
+    font-size: 16px;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid black;
+    transition: 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: #0066cc;
+    border-radius: 40px;
+    margin-bottom: 1em;
+}
+
+.toggle-btn:hover, .toggle-btn:active {
+    background-color: #0066cc;
+    color: white;
 }

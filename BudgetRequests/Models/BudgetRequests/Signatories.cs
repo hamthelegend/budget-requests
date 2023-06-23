@@ -26,7 +26,7 @@ public record Signatories(
         {
             SigningStage.Organization => new List<Signatory> { Treasurer, Auditor, President, Adviser },
             SigningStage.Deans => new List<Signatory> { Treasurer, Auditor, President, Adviser, AssistantDean, Dean },
-            SigningStage.StudentAffairsDirector => ToList()
+            _ => ToList()
         };
     }
 

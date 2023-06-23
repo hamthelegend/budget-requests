@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7IYh4PnrL9EQhObZrp40S1XAGucUMzJnP3fjOi8mjBTeJ5dB2YL/hYYLauA8gWA5aWBViYtDUvh2yrElP8If4A==",
+  "dgSpecHash": "oB8/wBDSwNRW/tSOnuutov3FMMbqfd7Ed5ekiGwzomPoqi0Lt6e0BZ0xIujXuoocZN0AmjmL1o+DSHL/O2wm+A==",
   "success": true,
   "projectFilePath": "C:\\Users\\hamue\\RiderProjects\\BudgetRequests\\BudgetRequests\\BudgetRequests.csproj",
   "expectedPackageFiles": [
@@ -106,6 +106,7 @@
     "C:\\Users\\hamue\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
+    "C:\\Users\\hamue\\.nuget\\packages\\select.htmltopdf.netcore\\23.1.0\\select.htmltopdf.netcore.23.1.0.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.4\\sqlitepclraw.bundle_e_sqlite3.2.1.4.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
     "C:\\Users\\hamue\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.4\\sqlitepclraw.lib.e_sqlite3.2.1.4.nupkg.sha512",

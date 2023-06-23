@@ -95,7 +95,11 @@
             </div>
 
             <div class="field">
-                <input type="submit" class="btn" name="submit" value="Submit" required>
+                <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Organization.Id">Edit Organization</a>
+            </div>
+            
+            <div class="field">
+                <a style="margin-top: 0" class="btn btn-secondary" asp-page="./Index">Go Back</a>
             </div>
         </form>
     </div>

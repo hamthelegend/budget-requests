@@ -8,11 +8,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BudgetRequests.Pages.Users;
 
-public class CreateModel : PageModel
+public class CreateSuperAdminModel : PageModel
 {
     private readonly DatabaseContext _context;
 
-    public CreateModel(DatabaseContext context)
+    public CreateSuperAdminModel(DatabaseContext context)
     {
         _context = context;
     }
@@ -34,8 +34,6 @@ public class CreateModel : PageModel
 
     [BindProperty] public string? RepeatPassword { get; set; }
     public string? RepeatPasswordError { get; set; }
-
-    [BindProperty] public string? UserType { get; set; }
 
     public IActionResult OnGet()
     {
@@ -99,20 +97,27 @@ public class CreateModel : PageModel
         }
 
         var passwordSalt = Hash.GenerateSalt();
-        var passwordHash = Password.ComputeHash(passwordSalt);
+        var passwordHash = Password!.ComputeHash(passwordSalt);
 
         var user = new User
         {
-            Type = UserType == "admin" ? Models.UserType.Admin : Models.UserType.Officer,
-            FirstName = FirstName,
+            Type = Models.UserType.Admin,
+            FirstName = FirstName!,
             MiddleName = MiddleName,
-            LastName = LastName,
-            Username = Username,
+            LastName = LastName!,
+            Username = Username!,
             PasswordHash = passwordHash,
             PasswordSalt = Convert.ToBase64String(passwordSalt)
         };
 
         _context.AddUser(user);
+
+        var superAdminRole = new AdminRole
+        {
+            Admin = user,
+            Position = AdminPosition.SuperAdmin
+        };
+        _context.AddAdminRole(superAdminRole);
 
         _context.SaveChanges();
 
@@ -121,18 +126,13 @@ public class CreateModel : PageModel
         {
             HttpContext.Session.Login(user);
         }
-        
-        return RedirectToPage("./Index");
+
+        return RedirectToPage("../Requests/Index");
     }
-    
+
     public IActionResult OnPostCancel(int id)
     {
         OnGet();
         return RedirectToPage("./Index");
-    }
-
-    public void SetUserType(string userType)
-    {
-        UserType = userType;
     }
 }

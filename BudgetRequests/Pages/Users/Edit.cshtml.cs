@@ -1,76 +1,145 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BudgetRequests.Data;
+using BudgetRequests.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BudgetRequests.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BudgetRequests.Pages.Users
 {
     public class EditModel : PageModel
     {
-        private readonly BudgetRequests.Models.DatabaseContext _context;
+        private readonly DatabaseContext _context;
 
-        public EditModel(BudgetRequests.Models.DatabaseContext context)
+        public EditModel(DatabaseContext context)
         {
             _context = context;
         }
 
+        public new User User { get; set; }
+        
         [BindProperty]
-        public User User { get; set; } = default!;
+        public string? FirstName { get; set; }
+        public string? FirstNameError { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        [BindProperty]
+        public string? MiddleName { get; set; }
+        public string? MiddleNameError { get; set; }
+
+        [BindProperty]
+        public string? LastName { get; set; }
+        public string? LastNameError { get; set; }
+
+        [BindProperty]
+        public string? Username { get; set; }
+        public string? UsernameError { get; set; }
+
+        [BindProperty]
+        public string? Password { get; set; }
+        public string? PasswordError { get; set; }
+        
+        [BindProperty]
+        public string? RepeatPassword { get; set; }
+        public string? RepeatPasswordError { get; set; }
+
+        public IActionResult OnGet()
         {
-            if (id == null || _context.GetUsers() == null)
-            {
-                return NotFound();
-            }
+            var user = HttpContext.Session.GetLoggedInUser(_context);
 
-            var user =  _context.GetUser((int)id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToPage("../Login/Index");
             }
+            
             User = user;
+
+            FirstName = user.FirstName;
+            MiddleName = user.MiddleName;
+            LastName = user.LastName;
+            Username = user.Username;
+
             return Page();
         }
+        
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public IActionResult OnPostSave()
         {
-            if (!ModelState.IsValid)
+            OnGet();
+            
+            var hasError = false;
+            
+            if (FirstName.IsNullOrEmpty())
+            {
+                FirstNameError = "First name is required";
+                hasError = true;
+            }
+            
+            if (LastName.IsNullOrEmpty())
+            {
+                LastNameError = "Last name is required";
+                hasError = true;
+            }
+            
+            if (Username.IsNullOrEmpty())
+            {
+                UsernameError = "Username is required";
+                hasError = true;
+            }
+            
+            if (Password.IsNullOrEmpty())
+            {
+                PasswordError = "Password is required";
+                hasError = true;
+            }
+            
+            if (RepeatPassword.IsNullOrEmpty())
+            {
+                RepeatPasswordError = "Repeat password is required";
+                hasError = true;
+            }
+
+            if (hasError)
+            {
+                return Page();
+            }
+            
+            if (!_context.IsUsernameAvailable(Username!) && User.Username != Username)
+            {
+                UsernameError = "That username is already taken";
+                hasError = true;
+            }
+
+            if (Password != RepeatPassword)
+            {
+                RepeatPasswordError = "Passwords do not match";
+                hasError = true;
+            }
+
+            if (hasError)
             {
                 return Page();
             }
 
-            _context.Attach(User).State = EntityState.Modified;
+            User.FirstName = FirstName!;
+            User.MiddleName = MiddleName != "" ? MiddleName : null;
+            User.LastName = LastName!;
+            User.Username = Username!;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(User.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var salt = Hash.GenerateSalt();
+            var passwordHash = Password!.ComputeHash(salt);
 
-            return RedirectToPage("./Index");
+            User.PasswordHash = passwordHash;
+            User.PasswordSalt = Convert.ToBase64String(salt);
+            
+            _context.SaveChanges();
+
+            return RedirectToPage("./Details");
         }
 
-        private bool UserExists(int id)
+        public IActionResult OnPostCancel(int id)
         {
-          return _context.GetUsers().Any(e => e.Id == id);
+            OnGet();
+            return RedirectToPage("./Details", new { User.Id });
         }
     }
 }

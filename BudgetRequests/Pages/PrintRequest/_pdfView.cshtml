@@ -1,0 +1,59 @@
+@model BudgetRequests.Models.BudgetRequests.BudgetRequest
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FacilitiesRequisition.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</head>
+<body>
+    <div id="previewSection">
+        <div style="display:flex;align-items:stretch;justify-content:center;">
+            <img src="~/images/AUF_Logo.png" style="width:8%; height:8%" />
+            <div class="text-center" style="margin-top:20px;margin-left:20px">
+                <h4>Angeles University Foundation</h4>
+                <h6>Facility Request form</h6>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div style="margin: 0 0 0 0">
+                <p>Date Filed: @Model.DateRequested</p>
+                <p>Purpose: @Model.DateRequested</p>
+                <p>Requested by: @Model.Requester.Name</p>
+                @* @if (!Model.RequestedDayTwo.HasValue && !Model.RequestedDayThree.HasValue) { *@
+                @*     <p>Date Requested: @Model.RequestedDayOne.Value.ToShortDateString()</p> *@
+                @* } else if (Model.RequestedDayOne.HasValue && Model.RequestedDayTwo.HasValue && !Model.RequestedDayThree.HasValue) { *@
+                @*     <p>Date Requested: @Model.RequestedDayOne.Value.ToShortDateString() to @Model.RequestedDayTwo.Value.ToShortDateString()</p>    *@
+                @* } else if (Model.RequestedDayOne.HasValue && !Model.RequestedDayTwo.HasValue && Model.RequestedDayThree.HasValue) { *@
+                @*     <p>Date Requested: @Model.RequestedDayOne.Value.ToShortDateString() to @Model.RequestedDayThree.Value.ToShortDateString()</p>    *@
+                @* } *@
+
+
+@*                NEED MUNG SEPARATE MODEL FOR THIS WHOLE FILE KABIT MULA NGAN KENG METUNG A MODEL KAYI ITA ING PASA MU KENI*@
+
+@*                <p>Requested by: @Model.Signatories.President.User.FullName</p>
+                <p>Endorsed by: @Model.Signatories.Dean.User.FullName</p>
+                <p>Request cleared by: @Model.Signatories.AdminServicesDirector.User.FullName</p>
+                <p>Activity cleared by: @Model.Signatories.StudentAffairsDirector.User.FullName</p>
+                <p>Request for Admin Support cleared by: @Model.Signatories.CampusFacilitiesDevelopmentDirector.User.FullName</p>
+                <p>Accounting Support cleared by: @Model.Signatories.AccountingOfficeDirector.User.FullName</p>
+                <p>Approved by:</p>
+                <p>@Model.Signatories.VicePresidentAdministration.User.FullName</p>
+                <p>@Model.Signatories.VicePresidentAcademicAffairs.User.FullName</p>*@
+            </div>
+        </div>
+    </div>
+</body>
+</html>

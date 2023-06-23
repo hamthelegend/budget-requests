@@ -1,14 +1,21 @@
-@page
-@using Microsoft.IdentityModel.Tokens
-@model EditModel
+﻿@page
+@model CreateSuperAdminModel
 
 @{
-    ViewData["Title"] = "Change User";
+    ViewData["Title"] = "Create Super Admin";
 }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./css/site.css">
+</head>
 
 <div class="create-container">
     <div class="box form-box">
-        <header>Edit User</header>
+        <header>Create Super Admin</header>
         <form action="" method="post">
             <div class="field input">
                 <label class="control-label">First name</label>
@@ -41,10 +48,7 @@
                 <span class="error-text">@Model.RepeatPasswordError</span>
             </div>
             <div class="field">
-                <input type="submit" class="btn btn-primary" asp-page-handler="Save" name="submit" value="Save" required>
-            </div>
-            <div class="field">
-                <input style="margin-top: 0" type="submit" class="btn btn-secondary" name="submit" asp-page-handler="Cancel" value="Cancel" required>
+                <input type="submit" class="btn btn-primary" name="submit" asp-page-handler="Add" value="Add" required>
             </div>
         </form>
     </div>

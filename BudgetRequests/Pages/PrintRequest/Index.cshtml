@@ -1,0 +1,132 @@
+@page
+@using BudgetRequests.Models.BudgetRequests
+@using BudgetRequests.Data
+@model IndexModel
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title>FacilityRequest_@Model.BudgetRequest.Requester.Name (@Model.BudgetRequest.Title)</title>
+    <link rel="stylesheet" href="./css/site.css">
+    <link href='https://fonts.googleapis.com/css?family=EB Garamond' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div id="previewSection" style="margin: 0.5in 0.5in 0.5in 0.5in">
+
+    <div style="font-family: Arial, sans-serif; margin-top: 0.25in">
+        <div style="text-align: center; font-weight: bold">
+            <text>Request for Budget</text>
+        </div>
+        <p>
+            <text style="font-weight: bold">Date Filed:</text> @Model.BudgetRequest.DateRequested
+        </p>
+        <p>
+            <text style="font-weight: bold">Title:</text> @Model.BudgetRequest.Title
+        </p>
+        <p>
+            <text style="font-weight: bold">Body:</text> @Model.BudgetRequest.Body
+        </p>
+        <p>
+            <text style="font-weight: bold">Requested by:</text> @Model.BudgetRequest.Requester.Name (@Model.User.FullName)
+        </p>
+        
+        <div style="margin-bottom: 0.25in"></div>
+        
+        <table>
+            <tr>
+                <th>Expense</th>
+                <th>Amount</th>
+            </tr>
+            
+            @foreach (var expense in Model.Expenses)
+            {
+                <tr>
+                    <td>@expense.Purpose</td>
+                    <td>@expense.Amount</td>
+                </tr>
+            }
+        </table>
+
+        <div class="row">
+            <div class="col">
+                @for (var index = 0; index < Model.Signatories.ToList().Count / 2; index++)
+                {
+                    var signatory = Model.Signatories.ToList()[index];
+                    if (signatory.User.SignatureFilename != null && signatory.HasSigned)
+                    {
+                        <img src="~/images/@signatory.User.SignatureFilename" alt="Signature" style="max-width: 1.25in; max-height: 1.25in;"/>
+                    }
+                    if (signatory is AdminSignatory adminSignatory)
+                    {
+                        <p style="margin-bottom: 0.25in">@signatory.User.FullName, @adminSignatory.Role.Position.GetText()</p>
+                    }
+                    if (signatory is OfficerSignatory officerSignatory)
+                    {
+                        <p style="margin-bottom: 0.25in">@signatory.User.FullName, @officerSignatory.Role.Position.GetText()</p>
+                    }
+                }
+            </div>
+            <div class="col">
+                @for (var index = Model.Signatories.ToList().Count / 2; index < Model.Signatories.ToList().Count; index++)
+                {
+                    var signatory = Model.Signatories.ToList()[index];
+                    if (signatory.User.SignatureFilename != null && signatory.HasSigned)
+                    {
+                        <img src="~/images/@signatory.User.SignatureFilename" alt="Signature" style="max-width: 1.25in; max-height: 1.25in;"/>
+                    }
+                    if (signatory is AdminSignatory adminSignatory)
+                    {
+                        <p style="margin-bottom: 0.25in">@signatory.User.FullName, @adminSignatory.Role.Position.GetText()</p>
+                    }
+                    if (signatory is OfficerSignatory officerSignatory)
+                    {
+                        <p style="margin-bottom: 0.25in">@signatory.User.FullName, @officerSignatory.Role.Position.GetText()</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="buttons" style="margin-bottom: 5px; margin-left: 20px">
+    <a class="btn btn-outline-primary" asp-page="/RequestFacility/ViewDetails" asp-route-id="@Model.BudgetRequest.Id">
+        Go back
+    </a>
+</div>
+
+    <div id="buttons" style="margin-bottom: 20px; margin-left: 20px">
+        <button type="button" class="btn btn-outline-primary" onclick="printPreview()">Print paper</button>
+        <button type="button" class="btn btn-outline-primary" onclick="exportToPDF()">Export to PDF</button>
+    </div>
+
+<script>
+            function exportToPDF() {
+                const previewSection = document.getElementById('previewSection');
+                
+                const options = {
+                   filename: 'FacilityRequest.pdf',
+                   jsPDF: { unit: 'in', format: [8.5, 13] }
+                };
+                
+                html2pdf().set(options).from(previewSection).save();
+            }
+            
+            function printPreview() {
+                const buttonSection = document.getElementById('buttons');
+                buttonSection.style.display = 'none';
+                            
+                window.print();
+                buttonSection.style.display = 'block';
+            }
+        </script>
+
+</body>
+
+</html>

@@ -91,6 +91,11 @@ namespace BudgetRequests.Pages.Requests
             return RedirectToPage("./Index");
         }
 
+        public IActionResult OnPostPrint(int id)
+        {
+            return RedirectToPage("../PrintRequest/Index", new { id });
+        }
+
         public IActionResult OnPostBack()
         {
             return RedirectToPage("./Index");

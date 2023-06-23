@@ -193,7 +193,10 @@
                 </div>
             }
             <div class="field">
-                <input type="submit" style="width: 100%;" class="btn btn-primary" name="submit" asp-page-handler="Back" value="Back" required>
+                <input type="submit" style="width: 100%;" class="btn btn-secondary" name="submit" asp-page-handler="Print" asp-route-id="@Model.BudgetRequest.Id" value="Print" required>
+            </div>
+            <div class="field">
+                <input type="submit" style="width: 100%;" class="btn btn-secondary" name="submit" asp-page-handler="Back" value="Back" required>
             </div>
         </form>
     </div>

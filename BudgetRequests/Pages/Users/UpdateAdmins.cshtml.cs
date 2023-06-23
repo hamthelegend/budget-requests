@@ -32,7 +32,7 @@ public class UpdateAdmins : PageModel
         return Page();
     }
 
-    public IActionResult OnPost()
+    public IActionResult OnPostUpdate()
     {
         if (!ModelState.IsValid)
         {
@@ -61,6 +61,11 @@ public class UpdateAdmins : PageModel
             Position = AdminPosition.StudentAffairsDirector
         });
 
+        return RedirectToPage("./CollegeAdmins");
+    }
+
+    public IActionResult OnPostCancel()
+    {
         return RedirectToPage("./CollegeAdmins");
     }
 }

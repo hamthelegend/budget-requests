@@ -12,7 +12,7 @@
     <title></title>
     <link rel="stylesheet" href="./css/site.css">
 </head>
-<body style="background: #eeeeee">
+@*<body style="background: #eeeeee">
 
 <div>
     <div class="row d-flex justify-content-md-center align-items-center vh-100">
@@ -68,7 +68,57 @@
     </div>
 </div>
 </body>
-</html>
+</html>*@
 
-<script>
-</script>
+<div class="create-container">
+    <div class="box form-box">
+        <header>Add User</header>
+        <form action="" method="post">
+            <div class="two-buttons row mb-4">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 100%;">
+                    <input type="radio" class="btn-check" asp-for="UserType" value="admin" id="btn-radio-1" autocomplete="off" checked>
+                    <label class="btn btn-outline-secondary" for="btn-radio-1">Admin</label>
+
+                    <input type="radio" class="btn-check" asp-for="UserType" value="officer" id="btn-radio-2" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btn-radio-2">Officer</label>
+                </div>
+            </div>
+            <div class="field input">
+                <label class="control-label">First name</label>
+                <input asp-for="FirstName" class="form-control mt-2"/>
+                <span class="error-text">@Model.FirstNameError</span>
+            </div>
+            <div class="field input">
+                <label class="control-label">Middle name</label>
+                <input asp-for="MiddleName" class="form-control mt-2"/>
+                <span class="error-text">@Model.MiddleNameError</span>
+            </div>
+            <div class="field input">
+                <label class="control-label">Last name</label>
+                <input asp-for="LastName" class="form-control mt-2"/>
+                <span class="error-text">@Model.LastNameError</span>
+            </div>
+            <div class="field input">
+                <label class="control-label">Username</label>
+                <input asp-for="Username" class="form-control mt-2"/>
+                <span class="error-text">@Model.UsernameError</span>
+            </div>
+            <div class="field input">
+                <label class="control-label">Password</label>
+                <input asp-for="Password" class="form-control mt-2" type="password"/>
+                <span class="error-text">@Model.PasswordError</span>
+            </div>
+            <div class="field input">
+                <label class="control-label">Repeat Password</label>
+                <input asp-for="RepeatPassword" class="form-control mt-2" type="password"/>
+                <span class="error-text">@Model.RepeatPasswordError</span>
+            </div>
+            <div class="field">
+                <input type="submit" class="btn btn-primary" name="submit" asp-page-handler="Add" value="Add" required>
+            </div>
+            <div class="field">
+                <input style="margin-top: 0" type="submit" class="btn btn-secondary" name="submit" asp-page-handler="Cancel" value="Cancel" required>
+            </div>
+        </form>
+    </div>
+</div>
