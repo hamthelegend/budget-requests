@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>FacilityRequest_@Model.BudgetRequest.Requester.Name (@Model.BudgetRequest.Title)</title>
+    <title style="margin-bottom: 0.25in">FacilityRequest_@Model.BudgetRequest.Requester.Name (@Model.BudgetRequest.Title)</title>
     <link rel="stylesheet" href="./css/site.css">
     <link href='https://fonts.googleapis.com/css?family=EB Garamond' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0/css/bootstrap.min.css">
@@ -36,23 +36,26 @@
         <p>
             <text style="font-weight: bold">Requested by:</text> @Model.BudgetRequest.Requester.Name (@Model.User.FullName)
         </p>
+        <p>
+            <text style="font-weight: bold">Total Amount:</text> ₱ @(Model.Expenses.Sum(x => x.Amount))
+        </p>
         
         <div style="margin-bottom: 0.25in"></div>
         
-        <table>
-            <tr>
-                <th>Expense</th>
-                <th>Amount</th>
-            </tr>
+        <div class="col" style="margin-bottom: 0.25in">
+            <div class="row">
+                <div class="col" style="font-weight: bold">Expense</div>
+                <div class="col" style="font-weight: bold">Amount</div>
+            </div>
             
-            @foreach (var expense in Model.Expenses)
-            {
-                <tr>
-                    <td>@expense.Purpose</td>
-                    <td>@expense.Amount</td>
-                </tr>
-            }
-        </table>
+            <div class="row">
+                @foreach (var expense in Model.Expenses)
+                {
+                    <div class="col">@expense.Purpose</div>
+                    <div class="col">@expense.Amount</div>
+                }
+            </div>
+        </div>
 
         <div class="row">
             <div class="col">
@@ -96,12 +99,12 @@
 </div>
 
 <div id="buttons" style="margin-bottom: 5px; margin-left: 20px">
-    <a class="btn btn-outline-primary" asp-page="/RequestFacility/ViewDetails" asp-route-id="@Model.BudgetRequest.Id">
+    <a class="btn btn-outline-primary" asp-page="../Requests/Details" asp-route-id="@Model.BudgetRequest.Id">
         Go back
     </a>
 </div>
 
-    <div id="buttons" style="margin-bottom: 20px; margin-left: 20px">
+    <div id="buttons-2" style="margin-bottom: 20px; margin-left: 20px">
         <button type="button" class="btn btn-outline-primary" onclick="printPreview()">Print paper</button>
         <button type="button" class="btn btn-outline-primary" onclick="exportToPDF()">Export to PDF</button>
     </div>
@@ -121,9 +124,12 @@
             function printPreview() {
                 const buttonSection = document.getElementById('buttons');
                 buttonSection.style.display = 'none';
-                            
+                const button2Section = document.getElementById('buttons-2');
+                button2Section.style.display = 'none';
+                
                 window.print();
                 buttonSection.style.display = 'block';
+                button2Section.style.display = 'block';
             }
         </script>
 

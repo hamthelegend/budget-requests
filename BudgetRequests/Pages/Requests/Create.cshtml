@@ -76,7 +76,7 @@
                     <span class="error-text">@Model.PurposeError</span>
                 </div>
                 <div class="field input col">
-                    <input asp-for="Amount" class="form-control" type="number" step=".01"/>
+                    <input asp-for="Amount" class="form-control"/>
                     <span class="error-text">@Model.AmountError</span>
                 </div>
                 @if (!Model.TemporaryExpenses.IsNullOrEmpty())

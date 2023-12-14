@@ -79,6 +79,11 @@ namespace BudgetRequests.Pages.Requests
             return Page();
         }
 
+        public IActionResult OnPostComments(int id)
+        {
+            return RedirectToPage("./Comments", new { id });
+        }
+
         public IActionResult OnPostDelete(int id)
         {
             var budgetRequest = _context.GetBudgetRequest(id);

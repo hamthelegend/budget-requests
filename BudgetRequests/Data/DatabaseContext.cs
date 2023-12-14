@@ -1,5 +1,6 @@
 ﻿using BudgetRequests.Models.Admins;
 using BudgetRequests.Models.BudgetRequests;
+using BudgetRequests.Models.Comments;
 using BudgetRequests.Models.Organizations;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ public class DatabaseContext : DbContext
     private DbSet<TemporaryExpense> TemporaryExpenses { get; set; }
     private DbSet<AdminSignatory> AdminSignatories { get; set; }
     private DbSet<OfficerSignatory> OfficerSignatories { get; set; }
+    
+    private DbSet<Comment> Comments { get; set; }
 
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {
@@ -583,5 +586,16 @@ public class DatabaseContext : DbContext
     public void RemoveTemporaryExpense(TemporaryExpense temporaryExpense)
     {
         TemporaryExpenses.Remove(temporaryExpense);
+    }
+
+    public List<Comment> GetComments(BudgetRequest budgetRequest)
+    {
+        return Comments.Where(x => x.BudgetRequest == budgetRequest).ToList();
+    }
+
+    public void AddComment(Comment comment)
+    {
+        Comments.Add(comment);
+        SaveChanges();
     }
 }

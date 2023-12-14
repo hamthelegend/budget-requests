@@ -9,9 +9,6 @@ public class Organization
     public int Id { get; set; }
     public string Name { get; set; }
     public User? Adviser { get; set; }
-    public bool IsStudentCouncil { get; set; }
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal GrossBudget { get; set; }
 
     public bool IsActive { get; set; } = true;
 }

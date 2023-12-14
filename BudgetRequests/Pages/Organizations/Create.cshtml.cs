@@ -54,13 +54,13 @@ public class CreateModel : PageModel
             new SelectListItem
             {
                 Value = admin.Id.ToString(),
-                Text = $"{admin.FirstName} {admin.LastName}"
+                Text = admin.FullName
             });
         Officers = _context.GetOfficers().Select(officer =>
             new SelectListItem
             {
                 Value = officer.Id.ToString(),
-                Text = $"{officer.FirstName} {officer.LastName}"
+                Text = officer.FullName
             });
         return Page();
     }
